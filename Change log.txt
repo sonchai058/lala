@@ -1,0 +1,10 @@
+Version 1.3 - 14 January 19 
+
+============================
+
+1. Fixed: Instagram Issue
+
+Version 1.0 - 	4 December 18
+===================================
+
+1. Initial release
