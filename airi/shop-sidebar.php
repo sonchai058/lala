@@ -55,42 +55,26 @@
   
     <!-- Main Wrapper Start -->
     <div class="wrapper">
+
+
         <!-- Header Area Start -->
         <header class="header header-fullwidth header-style-1">
             <div class="header-inner fixed-header">
                 <div class="container-fluid">
                     <div class="row align-items-center">
-                        <div class="col-xl-5 col-lg-6">
-                            &nbsp;
-                        </div>
-                        <div class="col-lg-2 col-md-3 col-4 text-lg-center">
-                            <!-- Logo Start Here -->
+                        <div class="col-4">
                             <a href="index.html" class="logo-box">
-                                <figure class="logo--normal"> 
-                                    <img src="./images/logo-lala-black.svg" alt="Logo"/>   
-                                </figure>
-                                <figure class="logo--transparency">
-                                    <img src="./images/logo-lala-black.svg" alt="Logo"/>  
+                                <figure class="logo--normal">
+                                    <img src="./images/logo-lala-black.svg" alt="Logo">
                                 </figure>
                             </a>
-                            <!-- Logo End Here -->
                         </div>
-                        <div class="col-xl-5 col-lg-4 col-md-9 col-8">
+                        <div class="col-8">
                             <ul class="header-toolbar text-right">
-                            <!--   
-                                <li class="header-toolbar__item d-none d-lg-block">
-                                    <a href="#sideNav" class="toolbar-btn">
-                                        <i class="dl-icon-menu2"></i>
-                                    </a>                                    
-                                </li>
-                            -->
                                 <li class="header-toolbar__item">
-                                    <a href="#searchForm" class="search-btn toolbar-btn">
-                                        <i class="dl-icon-search1"></i>
+                                    <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:0;right:0;width: 150px;">
+                                       ค้นหา <i class="dl-icon-search1"></i>
                                     </a>
-                                </li>
-                                <li class="header-toolbar__item d-lg-none">
-                                    <a href="#" class="menu-btn"></a>                 
                                 </li>
                             </ul>
                         </div>
@@ -114,8 +98,8 @@
                     <div class="col-8">
                         <ul class="header-toolbar text-right">
                             <li class="header-toolbar__item">
-                                <a href="#searchForm" class="search-btn toolbar-btn">
-                                    <i class="dl-icon-search1"></i>
+                                <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:0;right:0;width: 150px;">
+                                    ค้นหา <i class="dl-icon-search1"></i>
                                 </a>
                             </li>
                         </ul>
