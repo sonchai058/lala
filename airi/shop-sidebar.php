@@ -1,3 +1,6 @@
+<?php 
+require("inc-connect-db.php");
+?>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -72,7 +75,7 @@
                         <div class="col-8">
                             <ul class="header-toolbar text-right">
                                 <li class="header-toolbar__item">
-                                    <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:0;right:0;width: 150px;">
+                                    <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:-20px;right:0;width: 150px;">
                                        ค้นหา <i class="dl-icon-search1"></i>
                                     </a>
                                 </li>
@@ -98,7 +101,7 @@
                     <div class="col-8">
                         <ul class="header-toolbar text-right">
                             <li class="header-toolbar__item">
-                                <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:0;right:0;width: 150px;">
+                                <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:-20px;right:0;width: 150px;">
                                     ค้นหา <i class="dl-icon-search1"></i>
                                 </a>
                             </li>
@@ -114,33 +117,43 @@
         <div id="content" class="main-content-wrapper">
             <div class="page-content-inner enable-page-sidebar">
                 <div class="container-fluid">
-                    <div class="row shop-sidebar pt--45 pt-md--35 pt-sm--20 pb--60 pb-md--50 pb-sm--40">
-                        <div class="col-lg-9 order-lg-2" id="main-content">
+                    <div class="row pt--45 pt-md--35 pt-sm--20 pb--60 pb-md--50 pb-sm--40"> <!-- class shop-sidebar -->
+                        <div class="col-lg-12 order-lg-2" id="main-content">
                             <div class="shop-toolbar">
                                 <div class="shop-toolbar__inner">
                                     <div class="row align-items-center">
                                         <div class="col-md-6 text-md-left text-center mb-sm--20">
                                             <div class="shop-toolbar__left">
-                                                <p class="product-pages">Showing 1–20 of 42 results</p>
+                                                <p class="product-pages">แสดง 1–20 จากทั้งหมด 42 </p>
+                                                <!--
                                                 <div class="product-view-count">
-                                                    <p>Show</p>
+                                                    <p>แสดง</p>
                                                     <ul>
                                                         <li><a href="shop-sidebar.html">6</a></li>
                                                         <li class="active"><a href="shop-sidebar.html">12</a></li>
                                                         <li><a href="shop-sidebar.html">15</a></li>
                                                     </ul>
                                                 </div>
+                                                -->
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="shop-toolbar__right">
-                                                <a href="#" class="product-filter-btn shop-toolbar__btn">
-                                                    <span>Filters</span>
-                                                    <i></i>
-                                                </a>
                                                 <div class="product-ordering">
                                                     <a href="" class="product-ordering__btn shop-toolbar__btn">
-                                                        <span>Short By</span>
+                                                        <span>กลุ่มสินค้า</span>
+                                                        <i></i>
+                                                    </a>
+                                                    <ul class="product-ordering__list">
+                                                        <li class="active"><a href="#">All</a></li>
+                                                        <li><a href="#">Accessories</a></li>
+                                                        <li><a href="#">Brands</a></li>
+                                                        <li><a href="#">Clothing</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="product-ordering">
+                                                    <a href="" class="product-ordering__btn shop-toolbar__btn">
+                                                        <span>เรียงจาก</span>
                                                         <i></i>
                                                     </a>
                                                     <ul class="product-ordering__list">
@@ -324,12 +337,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -367,12 +382,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                     <span class="product-badge new">New</span>
@@ -420,12 +437,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                     <span class="product-badge sale">Sale</span>
@@ -464,12 +483,15 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
+                                                            
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                            -->
                                                         </div>
                                                     </div>
                                                     <span class="product-badge hot">hot</span>
@@ -508,12 +530,15 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
+                                                            
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                            -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -551,12 +576,15 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
+                                                            
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                            -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -608,12 +636,15 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
+                                                            
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -651,12 +682,15 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                            <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
+                                                            
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                            -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -694,12 +728,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -737,12 +773,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -780,12 +818,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -823,12 +863,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -866,12 +908,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -906,12 +950,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -946,12 +992,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -986,12 +1034,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -1026,12 +1076,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -1066,12 +1118,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -1106,12 +1160,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -1146,12 +1202,14 @@
                                                             <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
+                                                        <!--   
                                                             <a class="add_wishlist action-btn" href="wishlist.html" data-toggle="tooltip" data-placement="top" title="Add to Wishlist">
                                                                 <i class="dl-icon-heart4"></i>
                                                             </a>
                                                             <a class="add_compare action-btn" href="compare.html" data-toggle="tooltip" data-placement="top" title="Add to Compare">
                                                                 <i class="dl-icon-compare"></i>
                                                             </a>
+                                                        -->
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -1178,136 +1236,7 @@
                                 </ul>
                             </nav>
                         </div>
-                        <div class="col-lg-3 order-lg-1 mt--30 mt-md--40" id="primary-sidebar">
-                            <div class="sidebar-widget">
-                                <!-- Category Widget Start -->
-                                <div class="product-widget categroy-widget mb--35 mb-md--30">
-                                    <h3 class="widget-title">Categories</h3>
-                                    <ul class="prouduct-categories product-widget__list">
-                                        <li><a href="">Accessories</a><span class="count">(0)</span></li>
-                                        <li><a href="">Brands</a><span class="count">(0)</span></li>
-                                        <li><a href="">Clothing</a><span class="count">(1)</span></li>
-                                        <li><a href="">Fashions</a><span class="count">(21)</span></li>
-                                        <li><a href="">Furniture</a><span class="count">(20)</span></li>
-                                        <li><a href="">Gifts</a><span class="count">(0)</span></li>
-                                        <li><a href="">Kids</a><span class="count">(0)</span></li>
-                                        <li><a href="">Men</a><span class="count">(0)</span></li>
-                                        <li><a href="">New in</a><span class="count">(0)</span></li>
-                                        <li><a href="">Outlet</a><span class="count">(0)</span></li>
-                                        <li><a href="">Shoes</a><span class="count">(0)</span></li>
-                                        <li><a href="">Wallets</a><span class="count">(0)</span></li>
-                                        <li><a href="">Women</a><span class="count">(0)</span></li>
-                                    </ul>
-                                </div>
-                                <!-- Category Widget Start -->
 
-                                <!-- Price Filter Widget Start -->
-                                <div class="product-widget product-price-widget mb--40 mb-md--35">
-                                    <h3 class="widget-title">Price</h3>
-                                    <div class="widget_content">
-                                        <form action="#" method="post">
-                                            <div id="slider-range" class="price-slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
-                                                <div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 16.6667%; width: 79.1667%;">
-                                                    
-                                                </div>
-                                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 16.6667%;">
-                                                    
-                                                </span>
-                                                <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 95.8333%;">
-                                                    
-                                                </span>
-                                            </div>
-                                            <div class="filter-price">
-                                                <div class="filter-price__count">
-                                                    <div class="filter-price__input-group mb--20">
-                                                        <span>Price: </span>
-                                                        <input type="text" id="amount" class="amount-range" readonly="">
-                                                    </div>
-                                                    <button type="submit" class="btn btn-style-1 sidebar-btn">
-                                                        filter
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <!-- Price Filter Widget End -->
-
-                                <!-- Product Size Widget Start -->
-                                <div class="product-widget product-widget--size mb--25 mb-md--20">
-                                    <h3 class="widget-title">Size</h3>
-                                    <ul class="product-widget__list two-column-list">
-                                        <li><a href="shop-sidebar.html">L</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">S</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">XXl</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">M</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">XL</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">L</a><span class="count">(2)</span></li>
-                                    </ul>
-                                </div>
-                                <!-- Product Size Widget End -->
-
-                                <!-- Product Color Widget Start -->
-                                <div class="product-widget product-widget--Color mb--25 mb-md--20">
-                                    <h3 class="widget-title">Color</h3>
-                                    <ul class="product-widget__list two-column-list">
-                                        <li><a href="shop-sidebar.html">Blue</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Pink</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">White</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Green</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Red</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Black</a><span class="count">(2)</span></li>
-                                    </ul>
-                                </div>
-                                <!-- Product Color Widget End -->
-
-                                <!-- Product Brand Widget Start -->
-                                <div class="product-widget product-widget--brand mb--40 mb-md--30">
-                                    <h3 class="widget-title">Brands</h3>
-                                    <ul class="product-widget__list">
-                                        <li><a href="shop-sidebar.html">Airi</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Mango</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Valention</a><span class="count">(2)</span></li>
-                                        <li><a href="shop-sidebar.html">Zara</a><span class="count">(2)</span></li>
-                                    </ul>
-                                </div>
-                                <!-- Product Brand Widget End -->
-
-                                <!-- Category Widget Start -->
-                                <div class="product-widget tag-widget mb--35 mb-md--30">
-                                    <h3 class="widget-title">Categories</h3>
-                                    <div class="tagcloud">
-                                        <a href="shop-sidebar.html">chair</a>
-                                        <a href="shop-sidebar.html">deco</a>
-                                        <a href="shop-sidebar.html">dress</a>
-                                        <a href="shop-sidebar.html">fashion</a>
-                                        <a href="shop-sidebar.html">furniture</a>
-                                        <a href="shop-sidebar.html">light</a>
-                                        <a href="shop-sidebar.html">living</a>
-                                        <a href="shop-sidebar.html">sofa</a>
-                                        <a href="shop-sidebar.html">table</a>
-                                        <a href="shop-sidebar.html">women</a>
-                                    </div>
-                                </div>
-                                <!-- Category Widget Start -->
-                                
-                                <!-- Promo Widget Start -->
-                                <div class="product-widget promo-widget">
-                                    <div class="banner-box banner-type-3 banner-type-3-2 banner-hover-1">
-                                        <div class="banner-inner">
-                                            <div class="banner-image">
-                                                <img src="assets/img/banner/ad-banner.jpg" alt="Banner">
-                                            </div>
-                                            <div class="banner-info">
-                                                <h2 class="banner-title-11">New <br> <strong>Season</strong></h2>
-                                            </div>
-                                            <a class="banner-link banner-overlay" href="shop-sidebar.html">Shop Now</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Promo Widget End -->
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1321,9 +1250,9 @@
         <div class="searchform__popup" id="searchForm">
             <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
             <div class="searchform__body">
-                <p>Start typing and press Enter to search</p>
+                <p>LalaBeauty Shop</p>
                 <form class="searchform">
-                    <input type="text" name="search" id="search" class="searchform__input" placeholder="Search Entire Store...">
+                    <input type="text" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
                     <button type="submit" class="searchform__submit"><i class="dl-icon-search10"></i></button>
                 </form>
             </div>
@@ -1481,8 +1410,10 @@
                                 <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="window.location.href='cart.html'">
                                     Add To Cart
                                 </button>
+                            <!--   
                                 <a href="wishlist.html"><i class="dl-icon-heart2"></i></a>
                                 <a href="compare.html"><i class="dl-icon-compare2"></i></a>
+                            -->
                             </div>  
                             <div class="product-extra mb--30">
                                 <a href="#" class="font-size-12"><i class="fa fa-map-marker"></i>Find store near you</a>
