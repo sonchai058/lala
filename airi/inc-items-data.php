@@ -7,6 +7,15 @@
  $pagestart_count = 0; 
  $pageget_count = 20;
 
+ $search = isset($_GET['search'])?$_GET['search']:'';
+
+  $cate = '';
+  if(isset($_GET['cate'])) {
+  $type = $_GET['cate'];
+  }
+
+ $status = array('new','hot','sale');
+
 /*
 $rows = mysqli_query($conn,"SELECT * FROM items");
 $items = array();
