@@ -17,9 +17,9 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="meta description">
     <!-- Favicons -->
-    <link rel="shortcut icon" href="./images/logo-lala-black.svg" type="image/x-icon">
-    <link rel="apple-touch-icon" href="./images/logo-lala-black.svg">
-    <link rel="icon" href="./images/logo-lala-black.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/lala/logo.PNG" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/lala/logo.PNG">
+    <link rel="icon" href="assets/lala/logo.PNG" type="image/x-icon">
 
     <!-- Title -->
     <title>ค้นหาสินค้า</title>
@@ -98,22 +98,12 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
         <!-- Mobile Header area Start -->
         <header class="header-mobile">
             <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-4">
-                        <a href="index.html" class="logo-box">
-                            <figure class="logo--normal">
-                                <img src="./images/logo-lala-black.svg" alt="Logo">
-                            </figure>
+                <div class="row align-items-center" style="margin-top: 0;">
+                    <div class="col-12 text-center">
+                        <a href="#searchForm" class="search-btn toolbar-btn" style="">
+                            <img src="./images/logo-lala-black.svg" alt="Logo">
+                            <h3>ค้นหาสินค้า <i class="dl-icon-search1"></i></h3>
                         </a>
-                    </div>
-                    <div class="col-8">
-                        <ul class="header-toolbar text-right">
-                            <li class="header-toolbar__item">
-                                <a href="#searchForm" class="search-btn toolbar-btn" style="position:absolute;top:-20px;right:0;width: 150px;">
-                                    ค้นหา <i class="dl-icon-search1"></i>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
 
@@ -122,7 +112,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
         <!-- Mobile Header area End -->
 
         <!-- Main Content Wrapper Start -->
-        <div id="content" class="main-content-wrapper">
+        <div id="content" class="main-content-wrapper" style="margin-top: -40px;">
             <div class="page-content-inner enable-page-sidebar">
                 <div class="container-fluid">
                     <div class="row pt--45 pt-md--35 pt-sm--20 pb--60 pb-md--50 pb-sm--40"> <!-- class shop-sidebar -->
@@ -332,21 +322,24 @@ $items = array();
 while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {  
 
   $items[$value['prd_id']] = array(
+    'prd_id'=>$value['prd_id'],
+    'PrdPhoto'=>$value['PrdPhoto'],
+    'prd_name'=>urlencode($value['prd_name']).' ('.urlencode($value['unit_name']).')',
+    'price_tag'=>number_format($value['price_tag'],2),
+    'price_retail'=>number_format($value['price_retail'],2),
+    'price_wholesale'=>number_format($value['price_wholesale'],2),
+    'prd_descr'=>urlencode($value['prd_descr']),
     /*
-    'id'=>$value['id'],
-    'img'=>$value['img'],
-    */
-    //'name'=>htmlspecialchars($value['prd_name']).' ('.htmlspecialchars($value['unit_name']).')'
-    /*
-    'price'=>$value['price'],
     'nameEn'=>$value['name'],
     'nameCh'=>$value['name'],
     'nameTh'=>$value['name'],
-    'unit'=>$value['unit'],
-    'note'=>$value['note'],
-    'type'=>$value['type'],
-    'status'=>$value['status']
     */
+    'unit_name'=>urlencode($value['unit_name']),
+    'brand_name'=>urlencode($value['brand_name']),
+    'cate_id'=>$value['cate_id'],
+    'prd_code'=>$value['prd_code'],
+    'unit_id'=>$value['unit_id'],
+    'cate_name'=>urlencode($value['cate_name'])
   );
   /*
   if($type!=$value['type'] && $type!="") {
@@ -360,19 +353,23 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                             <div class="product-inner">
                                                 <figure class="product-image">
                                                     <div class="product-image--holder">
-                                                        <a href="product-details.html">
-                                                            <img src="../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
-                                                            <img src="../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
+                                                        <a href="javascipt:void(0)" data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
+                                                            <center>
+                                                                <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
+                                                            </center>
+                                                            <!--
+                                                            <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
+                                                            -->
                                                         </a>
                                                     </div>
                                                     <div class="airi-product-action">
                                                         <div class="product-action">
                                                             <a class="quickview-btn action-btn" data-toggle="tooltip" data-placement="top" title="Quick Shop">
-                                                                <span data-toggle="modal" data-target="#productModal">
+                                                                <span data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
                                                                     <i class="dl-icon-view"></i>
                                                                 </span>
                                                             </a>
-                                                            <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="Add to Cart">
+                                                            <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="หยิบใส่ตะกร้า">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
                                                             <!--
@@ -385,16 +382,19 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                         -->
                                                         </div>
                                                     </div>
-                                                    <span class="product-badge sale">Sale</span>
+                                                    <?php 
+                                                    $sts = $status[rand(0,2)];
+                                                    ?>
+                                                    <span class="product-badge <?php echo $sts;?>"><?php echo $sts;?></span>
                                                 </figure>
                                                 <div class="product-info text-center">
                                                     <h3 class="product-title">
                                                         <a href="product-details.html"><?php echo $value['prd_name'].' ('.$value['unit_name'].')';?></a>
                                                     </h3>
                                                     <span class="product-price-wrapper">
-                                                        <span class="money">$<?php echo number_format($value['price_tag'],2);?></span>
+                                                        <span class="money">$<?php echo number_format($value['price_wholesale'],2);?></span>
                                                         <span class="product-price-old">
-                                                            <span class="money">$60.00</span>
+                                                            <span class="money">$<?php echo number_format($value['price_tag'],2);?></span>
                                                         </span>
                                                     </span>
                                                 </div>
@@ -547,11 +547,12 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                             <div class="product-image">
                                 <div class="product-image--holder">
                                     <a href="product-details.html">
-                                        <img src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
+                                        <img id="PrdPhoto" src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
                                     </a>
                                 </div>
-                                <span class="product-badge sale">sale</span>
+                                <span id="status" class="product-badge new">new</span>
                             </div>
+                            <!--
                             <div class="product-image">
                                 <div class="product-image--holder">
                                     <a href="product-details.html">
@@ -568,45 +569,53 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                 </div>
                                 <span class="product-badge hot">hot</span>
                             </div>
+                            -->
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="modal-box product-summary">
+                        <!--   
                             <div class="product-navigation mb--10">
                                 <a href="#" class="prev"><i class="dl-icon-left"></i></a>
                                 <a href="#" class="next"><i class="dl-icon-right"></i></a>
                             </div>
-                            <h3 class="product-title mb--15">Waxed-effect pleated skirt</h3>
+                        -->
+                            <h3 class="product-title mb--15" id="prd_name" style="word-break: break-all;">&nbsp;</h3>
                             <span class="product-price-wrapper mb--20">
-                                <span class="money">$49.00</span>
+                                <span class="money">$<span id="price_tag">00.00</span></span>
                                 <span class="product-price-old">
-                                    <span class="money">$60.00</span>
+                                    <span class="money">$<span id="price_wholesale">00.00</span></span>
                                 </span>
                             </span>
-                            <p class="product-short-description mb--25 mb-md--20">Donec accumsan auctor iaculis. Sed suscipit arcu ligula, at egestas magna molestie a. Proin ac ex maximus, ultrices justo eget, sodales orci. Aliquam egestas libero ac turpis pharetra, in vehicula lacus scelerisque. Vestibulum ut sem laoreet, feugiat tellus at, hendrerit arcu.</p>
+                            <p class="product-short-description mb--25 mb-md--20" id="prd_descr">&nbsp;</p>
                             <div class="product-action d-flex flex-row align-items-center mb--30">
                                 <div class="quantity">
                                     <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
                                 </div>
                                 <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="window.location.href='cart.html'">
-                                    Add To Cart
+                                    หยิบใส่ตะกร้า
                                 </button>
                             <!--   
                                 <a href="wishlist.html"><i class="dl-icon-heart2"></i></a>
                                 <a href="compare.html"><i class="dl-icon-compare2"></i></a>
                             -->
                             </div>  
+                        <!--   
                             <div class="product-extra mb--30">
                                 <a href="#" class="font-size-12"><i class="fa fa-map-marker"></i>Find store near you</a>
                                 <a href="#" class="font-size-12"><i class="fa fa-exchange"></i>Delivery and return</a>
                             </div>
+                        -->
                             <div class="product-meta float-left">
-                                <span class="sku_wrapper font-size-12">SKU: <span class="sku">REF. LA-887</span></span>
-                                <span class="posted_in font-size-12">Categories: <a href="shop-sidebar.html" rel="tag">Fashions</a></span>
+                                <span class="sku_wrapper font-size-12">SKU: <span class="sku" id="brand_name">&nbsp;</span></span>
+                                <span class="posted_in font-size-12">Categories: <a href="shop-sidebar.html" rel="tag" id="cate_name">&nbsp;</a></span>
+                                <br/>
                             </div>
+                        <!--
                             <div class="product-share-box float-right">
                                 <span class="font-size-12">Share With</span>
                                 <!-- Social Icons Start Here -->
+                        <!--
                                 <ul class="social social-small">
                                     <li class="social__item">
                                         <a href="facebook.com" class="social__link">
@@ -630,7 +639,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                     </li>
                                 </ul>
                                 <!-- Social Icons End Here -->
+                        <!--
                             </div>
+                        -->
                         </div>
                     </div>
                 </div>
@@ -690,11 +701,36 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
       $_SESSION['cart_total'] = count($_SESSION['items']);
       echo 'var cart_total='.$_SESSION['cart_total'].';';
     ?>
+      function productSet(id) {
+        setDefaultProductModal();
+        console.log(id);
+        $("#cate_name").html(decodeURIComponent(shop_items[id].cate_name));
+        $("#brand_name").html(decodeURIComponent(shop_items[id].brand_name));
+        $("#prd_descr").html(decodeURIComponent(shop_items[id].prd_descr));
+        $("#price_wholesale").html(shop_items[id].price_wholesale);
+        $("#price_tag").html(shop_items[id].price_tag);
+        $("#prd_name").html(decodeURIComponent(shop_items[id].prd_name));
+        var status = ['new','hot','sale']
+        var sts_txt = status[Math.floor(Math.random() * 3)];
+        $("#status").removeClass("new sale hot"); $("#status").addClass(sts_txt); $("#status").html(sts_txt);
+        $("#PrdPhoto").attr("src","../../files/product-o/"+shop_items[id].PrdPhoto);
+      }
+      function setDefaultProductModal() {
+        $("#cate_name").html("");
+        $("#brand_name").html("");
+        $("#prd_descr").html("");
+        $("#price_wholesale").html("");
+        $("#price_tag").html("");
+        $("#prd_name").html("");
+        $("#status").removeClass("new sale hot"); $("#status").html("");
+        $("#PrdPhoto").attr("src","assets/img/products/prod-9-1.jpg");
+      }
     </script>
 
     <script>
         setTimeout(function(){
             $(".search-btn.toolbar-btn").click();
+            $("#search").focus();
         },400);
     </script>
     
