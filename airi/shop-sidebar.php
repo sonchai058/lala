@@ -1,17 +1,14 @@
 <?php 
 require("inc-items-data.php");
 
-$rows = mysqli_query($conn,"SELECT *,( SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
+$sql = "(SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
 LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
 LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
 LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
-WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes' limit {$pagestart_count},20");
+WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'{$q}";
 
-$rows1 = mysqli_query($conn,"SELECT count(*) as cc,( SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
-LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
-LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
-LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
-WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'");
+$rows = mysqli_query($conn,"SELECT *,".$sql." limit {$pagestart_count},20");
+$rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
 
 ?>
 <!doctype html>
@@ -57,6 +54,13 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+      function noimage(image) {
+        image.onerror = "";
+        image.src = 'images/noimage.png';
+        return true;
+      }
+    </script>
 </head>
 
 <body>
@@ -128,7 +132,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
                                     <div class="row align-items-center">
                                         <div class="col-md-6 text-md-left text-center mb-sm--20">
                                             <div class="shop-toolbar__left">
-                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="page_count"><?php echo $page_count;?></span></p>
+                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="page_count"><?php echo $page_count;?></span> รายการ</p>
                                                 <!--
                                                 <div class="product-view-count">
                                                     <p>แสดง</p>
@@ -363,9 +367,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                     <div class="product-image--holder">
                                                         <a href="javascipt:void(0)" data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
                                                             <center>
-                                                                <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
+                                                                <img onerror="noimage(this)" style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
   
-                                                                <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
+                                                                <img onerror="noimage(this)" style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
                                                             </center>
                                                             
                                                         </a>
@@ -429,13 +433,15 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                 <ul class="pagination" style="display: table;">
                                     <li><a href="#" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
                                 <?php
+                                 
                                 $count = ($page_count/20);
+                                $count = (int)$count;
                                 if($page_count%20>0) {
-                                    $count++;
-                                }
+                                    $count = $count+1;
+                                }                               
                                 for($i=0;$i<$count;$i++){
                                 ?>
-                                    <li><a href="?pagestart_count=<?php echo ($i*20);?>&pageend_count=<?php echo ((($i+1)*20)-1);?>" class="<?php if($i==$pagestart_count){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
+                                    <li><a href="?pagestart_count=<?php echo ($i*20);?>&pageend_count=<?php echo ((($i+1)*20)-1);?>" class="<?php if($i==($pagestart_count/20)){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
                                 <?php
                                 }
                                 ?>
@@ -459,10 +465,12 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
             <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
             <div class="searchform__body">
                 <p>LalaBeauty Shop</p>
-                <form class="searchform">
-                    <input type="text" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
-                    <button type="submit" class="searchform__submit"><i class="dl-icon-search10"></i></button>
-                </form>
+                <!-- <form class="searchform"> -->
+                    <div class="searchform">
+                    <input type="text" value="<?php echo $_GET['q'];?>" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
+                    <button type="submit" class="searchform__submit" onclick="formSearchLoad()"><i class="dl-icon-search10"></i></button>
+                <!-- </form> -->
+                    </div>
             </div>
         </div>
         <!-- Search from End --> 
@@ -574,7 +582,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                             <div class="product-image">
                                 <div class="product-image--holder">
                                     <a href="product-details.html">
-                                        <img id="PrdPhoto" src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
+                                        <img onerror="noimage(this)" id="PrdPhoto" src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
                                     </a>
                                 </div>
                                 <span id="status" class="product-badge new">new</span>
@@ -722,7 +730,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     <script>  
     <?php
       echo 'var cart_total='.$_SESSION['cart_total'].';';
-      echo 'var page_count="'.number_format($page_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";'; 
+      echo 'var page_count="'.number_format($page_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";';  echo 'var cate_id="'.$cate_id.'";'; echo 'var order="'.$order.'";';
       echo "var shop_items=JSON.parse('".json_encode($items)."');";
       echo "var items=JSON.parse('".json_encode($_SESSION['items'])."');";
 
@@ -753,13 +761,22 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#status").removeClass("new sale hot"); $("#status").html("");
         $("#PrdPhoto").attr("src","assets/img/products/prod-9-1.jpg");
       }
+      function formSearchLoad() {
+        if($("#search").val()!='') {
+            window.location.replace("?q="+$("#search").val()+"&pagestart_count="+pagestart_count+"&pageend_count="+pageend_count+"&cate_id="+cate_id+"&order="+order);
+        }else {
+           $("#search").focus(); 
+        }
+      }
     </script>
 
     <script>
         $(document).ready(function(){
             setTimeout(function(){
-                $(".search-btn.toolbar-btn").click();
-                $("#search").focus();
+                if($("#search").val()=='') {
+                    $(".search-btn.toolbar-btn").click();
+                    $("#search").focus();
+                }
             },400);
             $("#page_count").html(page_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
         });
