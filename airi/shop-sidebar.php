@@ -5,7 +5,13 @@ $rows = mysqli_query($conn,"SELECT *,( SELECT sto_prd_photo.photo_val FROM sto_p
 LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
 LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
 LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
-WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes' limit 0,20");
+WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes' limit {$pagestart_count},20");
+
+$rows1 = mysqli_query($conn,"SELECT count(*) as cc,( SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
+LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
+LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
+LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
+WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'");
 
 ?>
 <!doctype html>
@@ -110,7 +116,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
             </div>
         </header>
         <!-- Mobile Header area End -->
-
+        
         <!-- Main Content Wrapper Start -->
         <div id="content" class="main-content-wrapper" style="margin-top: -40px;">
             <div class="page-content-inner enable-page-sidebar">
@@ -122,7 +128,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
                                     <div class="row align-items-center">
                                         <div class="col-md-6 text-md-left text-center mb-sm--20">
                                             <div class="shop-toolbar__left">
-                                                <p class="product-pages">แสดง 1–20 จากทั้งหมด 42</p>
+                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="page_count"><?php echo $page_count;?></span></p>
                                                 <!--
                                                 <div class="product-view-count">
                                                     <p>แสดง</p>
@@ -319,8 +325,10 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
                                 <div class="row grid-space-20 xxl-block-grid-4">
 <?php
 $items = array();
+$key = 0;
+$tmp = mysqli_fetch_array($rows1,MYSQLI_ASSOC);
+$page_count = @$tmp['cc']; 
 while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {  
-
   $items[$value['prd_id']] = array(
     'prd_id'=>$value['prd_id'],
     'PrdPhoto'=>$value['PrdPhoto'],
@@ -356,10 +364,10 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                         <a href="javascipt:void(0)" data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
                                                             <center>
                                                                 <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
+  
+                                                                <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
                                                             </center>
-                                                            <!--
-                                                            <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
-                                                            -->
+                                                            
                                                         </a>
                                                     </div>
                                                     <div class="airi-product-action">
@@ -402,18 +410,37 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                         </div>
                                     </div>
 <?php
-}
+} 
 ?>
 
                                 </div>
                             </div>
+
+                            <style>
+                                .pagination {
+                                    width: 90%;
+                                    margin: 0 auto;
+                                }
+                                .pagination li {
+                                    float:left; width:50px;
+                                }
+                            </style>
                             <nav class="pagination-wrap">
-                                <ul class="pagination">
-                                    <li><a href="shop-sidebar.html" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
-                                    <li><span class="current page-number">1</span></li>
-                                    <li><a href="shop-sidebar.html" class="page-number">2</a></li>
-                                    <li><a href="shop-sidebar.html" class="page-number">3</a></li>
-                                    <li><a href="shop-sidebar.html" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+                                <ul class="pagination" style="display: table;">
+                                    <li><a href="#" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
+                                <?php
+                                $count = ($page_count/20);
+                                if($page_count%20>0) {
+                                    $count++;
+                                }
+                                for($i=0;$i<$count;$i++){
+                                ?>
+                                    <li><a href="?pagestart_count=<?php echo ($i*20);?>&pageend_count=<?php echo ((($i+1)*20)-1);?>" class="<?php if($i==$pagestart_count){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
+                                <?php
+                                }
+                                ?>
+                                    <li><a href="#" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+
                                 </ul>
                             </nav>
                         </div>
@@ -695,6 +722,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     <script>  
     <?php
       echo 'var cart_total='.$_SESSION['cart_total'].';';
+      echo 'var page_count="'.number_format($page_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";'; 
       echo "var shop_items=JSON.parse('".json_encode($items)."');";
       echo "var items=JSON.parse('".json_encode($_SESSION['items'])."');";
 
@@ -728,10 +756,14 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     </script>
 
     <script>
-        setTimeout(function(){
-            $(".search-btn.toolbar-btn").click();
-            $("#search").focus();
-        },400);
+        $(document).ready(function(){
+            setTimeout(function(){
+                $(".search-btn.toolbar-btn").click();
+                $("#search").focus();
+            },400);
+            $("#page_count").html(page_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
+        });
+
     </script>
     
 </body>

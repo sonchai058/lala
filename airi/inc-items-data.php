@@ -4,8 +4,9 @@
 
  $conn = conDB();
 
- $pagestart_count = 0; 
- $pageget_count = 20;
+ $pagestart_count = $_GET['pagestart_count']; 
+ $pageend_count = $_GET['pageend_count']; 
+ $page_count = 20;
 
  $search = isset($_GET['search'])?$_GET['search']:'';
 
