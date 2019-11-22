@@ -20,7 +20,7 @@
   $type = $_GET['cate'];
   }
 
- $status = array('new','hot','sale');
+ $status = array('new','hot','sale','Unknown');
 
 /*
 $rows = mysqli_query($conn,"SELECT * FROM items");

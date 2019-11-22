@@ -1,3 +1,4 @@
+//alert('22222');
 /// event เมื่อโหลดหน้าเพจเรียบร้อยแล้ว ให้ใช้คำสั่ง liff.init() สำหรับเตรียมความพร้อมใช้คำสั่ง LIFF ต่างๆ
 window.onload = function (e) {
     liff.init(function (data) { // คำสั่ง init() คืนค่าข้อมูลของ LIFF app 
@@ -36,7 +37,7 @@ function initializeApp(data) {
             packageId: '2',
             stickerId: '144'
         }]).then(function () {
-            window.alert("Message sent");
+            //window.alert("Message sent");
         }).catch(function (error) {
             window.alert("Error sending message: " + error);
         });
@@ -86,8 +87,61 @@ function toggleProfileData() {
 function toggleElement(elementId) {
     const elem = document.getElementById(elementId);
     if (elem.offsetWidth > 0 && elem.offsetHeight > 0) {
-        elem.style.display = "none";
+        //elem.style.display = "none";
     } else {
-        elem.style.display = "block";
+        //elem.style.display = "block";
     }
+}
+
+function fullaction() {
+
+   const accessToken = liff.getAccessToken();
+   document.getElementById('accesstokenfield').textContent = accessToken;
+   
+   setTimeout(function(){
+        liff.getProfile().then(function (profile) {
+			//alert(JSON.stringify(profile));
+            document.getElementById('useridprofilefield').textContent = profile.userId;
+            document.getElementById('displaynamefield').textContent = profile.displayName;
+ 
+            const profilePictureDiv = document.getElementById('profilepicturediv');
+            if (profilePictureDiv.firstElementChild) {
+                profilePictureDiv.removeChild(profilePictureDiv.firstElementChild);
+            }
+            const img = document.createElement('img');
+            img.src = profile.pictureUrl;
+            img.alt = "Profile Picture";
+            profilePictureDiv.appendChild(img);
+ 
+            document.getElementById('statusmessagefield').textContent = profile.statusMessage;
+            //toggleProfileData();
+			
+			//$("#lineapi").modal();
+
+		    accesstokenfield = accessToken;
+		    useridprofilefield = profile.userId;
+		    displaynamefield = profile.displayName;
+		    pictureUrl = profile.pictureUrl;
+		    statusmessagefield = profile.statusMessage;
+
+        }).catch(function (error) {
+            window.alert("Error getting profile: " + error);
+        });   
+
+        liff.sendMessages([{
+            type: 'text',
+            text: "ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
+        }, {
+            type: 'sticker',
+            packageId: '2',
+            stickerId: '144'
+        }]).then(function () {
+            //window.alert("Message sent");
+        }).catch(function (error) {
+            window.alert("Error sending message: " + error);
+        });
+
+
+   },1000);
+
 }

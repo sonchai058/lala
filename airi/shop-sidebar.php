@@ -60,6 +60,12 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
         image.src = 'images/noimage.png';
         return true;
       }
+
+      var accesstokenfield = "";
+      var useridprofilefield = "";
+      var displaynamefield = "";
+      var pictureUrl = "";
+      var statusmessagefield = "";
     </script>
 </head>
 
@@ -76,12 +82,29 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
   
     <!-- Main Wrapper Start -->
     <div class="wrapper">
-
+        <style>
+            .tools li {
+                float: left;
+            }
+        </style>
 
         <!-- Header Area Start -->
         <header class="header header-fullwidth header-style-1">
             <div class="header-inner fixed-header">
                 <div class="container-fluid">
+                    <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
+                        <li class="header-toolbar__item">
+                            <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                                <i class="dl-icon-cart4"></i>
+                                <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                            </a>
+                        </li>
+                        <li class="header-toolbar__item">
+                            <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                                <i class="dl-icon-user1"></i>
+                            </a>
+                        </li>
+                    </ul>
                     <div class="row align-items-center">
                         <div class="col-4">
                             <a href="index.html" class="logo-box">
@@ -106,10 +129,23 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
         <!-- Header Area End -->
 
         <!-- Mobile Header area Start -->
-        <header class="header-mobile">
+        <header class="header-mobile" style="margin-top: -86.9688px !important;">
             <div class="container-fluid">
                 <div class="row align-items-center" style="margin-top: 0;">
                     <div class="col-12 text-center">
+                        <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
+                            <li class="header-toolbar__item">
+                                <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                                    <i class="dl-icon-cart4"></i>
+                                    <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                                </a>
+                            </li>
+                            <li class="header-toolbar__item">
+                                <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                                    <i class="dl-icon-user1"></i>
+                                </a>
+                            </li>
+                        </ul>
                         <a href="#searchForm" class="search-btn toolbar-btn" style="">
                             <img src="./images/logo-lala-black.svg" alt="Logo">
                             <h3>ค้นหาสินค้า <i class="dl-icon-search1"></i></h3>
@@ -351,7 +387,8 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     'cate_id'=>$value['cate_id'],
     'prd_code'=>$value['prd_code'],
     'unit_id'=>$value['unit_id'],
-    'cate_name'=>urlencode($value['cate_name'])
+    'cate_name'=>urlencode($value['cate_name']),
+    'badge_status'=>$value['badge_status']
   );
   /*
   if($type!=$value['type'] && $type!="") {
@@ -366,11 +403,11 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                 <figure class="product-image">
                                                     <div class="product-image--holder">
                                                         <a href="javascipt:void(0)" data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
-                                                            <center>
-                                                                <img onerror="noimage(this)" style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
+                     
+                                                                <img onerror="noimage(this)" style="margin-left: 7px;object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
   
-                                                                <img onerror="noimage(this)" style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
-                                                            </center>
+                                                                <img onerror="noimage(this)" style="margin-left: 7px;z-index:0;object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
+                                                        
                                                             
                                                         </a>
                                                     </div>
@@ -395,9 +432,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                         </div>
                                                     </div>
                                                     <?php 
-                                                    $sts = $status[rand(0,2)];
+                                                    //$sts = $status[rand(0,3)];
                                                     ?>
-                                                    <span class="product-badge <?php echo $sts;?>"><?php echo $sts;?></span>
+                                                    <span class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?>;?></span>
                                                 </figure>
                                                 <div class="product-info text-center">
                                                     <h3 class="product-title">
@@ -691,6 +728,97 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     </div>
     <!-- Main Wrapper End -->
 
+        <!-- Modal Line API -->
+        <div class="modal fade lineapi" id="lineapi" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div id="lineapi_content">
+                    <!--
+                    <div class="buttongroup">
+               
+                        <div class="buttonrow">
+                            <button id="openwindowbutton">Open Window</button>
+                            <button id="closewindowbutton">Close Window</button>
+                        </div>
+            
+                        <div class="buttonrow">
+                            <button id="getaccesstoken">Get Access Token</button>
+                            <button id="getprofilebutton">Get Profile</button>
+                            <button id="sendmessagebutton">Send Message</button>
+                        </div>
+                    </div>
+                    -->
+                 
+                    <div id="accesstokendata" style="display: block">
+                        <h2>Access Token</h2>
+                        <!-- <a href="#" onclick="toggleAccessToken()">Close Access Token</a> -->
+                        <table border="1">
+                            <tr>
+                                <th>accessToken</th>
+                                <td id="accesstokenfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="profileinfo" style="display: block">
+                        <h2>Profile</h2>
+                        <!-- <a href="#" onclick="toggleProfileData()">Close Profile</a>-->
+                        <div id="profilepicturediv">
+                        </div>
+                        <table border="1">
+                            <tr>
+                                <th>userId</th>
+                                <td id="useridprofilefield"></td>
+                            </tr>
+                            <tr>
+                                <th>displayName</th>
+                                <td id="displaynamefield"></td>
+                            </tr>
+                            <tr>
+                                <th>statusMessage</th>
+                                <td id="statusmessagefield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="liffdata">
+                        <h2>LIFF Data</h2>
+                        <table border="1">
+                            <tr>
+                                <th>language</th>
+                                <td id="languagefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.viewType</th>
+                                <td id="viewtypefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.userId</th>
+                                <td id="useridfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.utouId</th>
+                                <td id="utouidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.roomId</th>
+                                <td id="roomidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.groupId</th>
+                                <td id="groupidfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal End -->
+
 
     <!-- ************************* JS Files ************************* -->
 
@@ -746,9 +874,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#price_wholesale").html(shop_items[id].price_wholesale);
         $("#price_tag").html(shop_items[id].price_tag);
         $("#prd_name").html(decodeURIComponent(shop_items[id].prd_name));
-        var status = ['new','hot','sale']
-        var sts_txt = status[Math.floor(Math.random() * 3)];
-        $("#status").removeClass("new sale hot"); $("#status").addClass(sts_txt); $("#status").html(sts_txt);
+        //var status = ['new','hot','sale','Unknown']
+        //var sts_txt = status[Math.floor(Math.random() * 4)];
+        $("#status").removeClass("new sale hot Unknown"); $("#status").addClass(shop_items[id].badge_status); $("#status").html(shop_items[id].badge_status);
         $("#PrdPhoto").attr("src","../../files/product-o/"+shop_items[id].PrdPhoto);
       }
       function setDefaultProductModal() {
@@ -779,10 +907,16 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                 }
             },400);
             $("#page_count").html(page_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
+
+            setTimeout(function(){
+                fullaction();
+            },1000);
+
         });
 
     </script>
     
 </body>
-
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="liff-starter.js"></script>
 </html>
