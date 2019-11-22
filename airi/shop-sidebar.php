@@ -1,11 +1,14 @@
 <?php 
 require("inc-items-data.php");
 
-$rows = mysqli_query($conn,"SELECT *,( SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
+$sql = "(SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
 LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
 LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
 LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
-WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes' limit 0,20");
+WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'{$q}";
+
+$rows = mysqli_query($conn,"SELECT *,".$sql." limit {$pagestart_count},20");
+$rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
 
 ?>
 <!doctype html>
@@ -51,6 +54,19 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+      function noimage(image) {
+        image.onerror = "";
+        image.src = 'images/noimage.png';
+        return true;
+      }
+
+      var accesstokenfield = "";
+      var useridprofilefield = "";
+      var displaynamefield = "";
+      var pictureUrl = "";
+      var statusmessagefield = "";
+    </script>
 </head>
 
 <body>
@@ -66,12 +82,29 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
   
     <!-- Main Wrapper Start -->
     <div class="wrapper">
-
+        <style>
+            .tools li {
+                float: left;
+            }
+        </style>
 
         <!-- Header Area Start -->
         <header class="header header-fullwidth header-style-1">
             <div class="header-inner fixed-header">
                 <div class="container-fluid">
+                    <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
+                        <li class="header-toolbar__item">
+                            <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                                <i class="dl-icon-cart4"></i>
+                                <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                            </a>
+                        </li>
+                        <li class="header-toolbar__item">
+                            <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                                <i class="dl-icon-user1"></i>
+                            </a>
+                        </li>
+                    </ul>
                     <div class="row align-items-center">
                         <div class="col-4">
                             <a href="index.html" class="logo-box">
@@ -96,10 +129,23 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
         <!-- Header Area End -->
 
         <!-- Mobile Header area Start -->
-        <header class="header-mobile">
+        <header class="header-mobile" style="margin-top: -86.9688px !important;">
             <div class="container-fluid">
                 <div class="row align-items-center" style="margin-top: 0;">
                     <div class="col-12 text-center">
+                        <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
+                            <li class="header-toolbar__item">
+                                <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                                    <i class="dl-icon-cart4"></i>
+                                    <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                                </a>
+                            </li>
+                            <li class="header-toolbar__item">
+                                <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                                    <i class="dl-icon-user1"></i>
+                                </a>
+                            </li>
+                        </ul>
                         <a href="#searchForm" class="search-btn toolbar-btn" style="">
                             <img src="./images/logo-lala-black.svg" alt="Logo">
                             <h3>ค้นหาสินค้า <i class="dl-icon-search1"></i></h3>
@@ -110,7 +156,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
             </div>
         </header>
         <!-- Mobile Header area End -->
-
+        
         <!-- Main Content Wrapper Start -->
         <div id="content" class="main-content-wrapper" style="margin-top: -40px;">
             <div class="page-content-inner enable-page-sidebar">
@@ -122,7 +168,7 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
                                     <div class="row align-items-center">
                                         <div class="col-md-6 text-md-left text-center mb-sm--20">
                                             <div class="shop-toolbar__left">
-                                                <p class="product-pages">แสดง 1–20 จากทั้งหมด 42</p>
+                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="page_count"><?php echo $page_count;?></span> รายการ</p>
                                                 <!--
                                                 <div class="product-view-count">
                                                     <p>แสดง</p>
@@ -319,8 +365,10 @@ WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' A
                                 <div class="row grid-space-20 xxl-block-grid-4">
 <?php
 $items = array();
+$key = 0;
+$tmp = mysqli_fetch_array($rows1,MYSQLI_ASSOC);
+$page_count = @$tmp['cc']; 
 while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {  
-
   $items[$value['prd_id']] = array(
     'prd_id'=>$value['prd_id'],
     'PrdPhoto'=>$value['PrdPhoto'],
@@ -339,7 +387,8 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     'cate_id'=>$value['cate_id'],
     'prd_code'=>$value['prd_code'],
     'unit_id'=>$value['unit_id'],
-    'cate_name'=>urlencode($value['cate_name'])
+    'cate_name'=>urlencode($value['cate_name']),
+    'badge_status'=>$value['badge_status']
   );
   /*
   if($type!=$value['type'] && $type!="") {
@@ -354,12 +403,12 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                 <figure class="product-image">
                                                     <div class="product-image--holder">
                                                         <a href="javascipt:void(0)" data-toggle="modal" data-target="#productModal" onclick="productSet(<?php echo $value['prd_id'];?>)">
-                                                            <center>
-                                                                <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
-                                                            </center>
-                                                            <!--
-                                                            <img style="object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
-                                                            -->
+                     
+                                                                <img onerror="noimage(this)" style="margin-left: 7px;object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="primary-image">
+  
+                                                                <img onerror="noimage(this)" style="margin-left: 7px;z-index:0;object-fit: cover; width: 400px; height: 400px;" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Image" class="secondary-image">
+                                                        
+                                                            
                                                         </a>
                                                     </div>
                                                     <div class="airi-product-action">
@@ -383,9 +432,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                         </div>
                                                     </div>
                                                     <?php 
-                                                    $sts = $status[rand(0,2)];
+                                                    //$sts = $status[rand(0,3)];
                                                     ?>
-                                                    <span class="product-badge <?php echo $sts;?>"><?php echo $sts;?></span>
+                                                    <span class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?>;?></span>
                                                 </figure>
                                                 <div class="product-info text-center">
                                                     <h3 class="product-title">
@@ -402,18 +451,39 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                         </div>
                                     </div>
 <?php
-}
+} 
 ?>
 
                                 </div>
                             </div>
+
+                            <style>
+                                .pagination {
+                                    width: 90%;
+                                    margin: 0 auto;
+                                }
+                                .pagination li {
+                                    float:left; width:50px;
+                                }
+                            </style>
                             <nav class="pagination-wrap">
-                                <ul class="pagination">
-                                    <li><a href="shop-sidebar.html" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
-                                    <li><span class="current page-number">1</span></li>
-                                    <li><a href="shop-sidebar.html" class="page-number">2</a></li>
-                                    <li><a href="shop-sidebar.html" class="page-number">3</a></li>
-                                    <li><a href="shop-sidebar.html" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+                                <ul class="pagination" style="display: table;">
+                                    <li><a href="#" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
+                                <?php
+                                 
+                                $count = ($page_count/20);
+                                $count = (int)$count;
+                                if($page_count%20>0) {
+                                    $count = $count+1;
+                                }                               
+                                for($i=0;$i<$count;$i++){
+                                ?>
+                                    <li><a href="?pagestart_count=<?php echo ($i*20);?>&pageend_count=<?php echo ((($i+1)*20)-1);?>" class="<?php if($i==($pagestart_count/20)){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
+                                <?php
+                                }
+                                ?>
+                                    <li><a href="#" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+
                                 </ul>
                             </nav>
                         </div>
@@ -432,10 +502,12 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
             <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
             <div class="searchform__body">
                 <p>LalaBeauty Shop</p>
-                <form class="searchform">
-                    <input type="text" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
-                    <button type="submit" class="searchform__submit"><i class="dl-icon-search10"></i></button>
-                </form>
+                <!-- <form class="searchform"> -->
+                    <div class="searchform">
+                    <input type="text" value="<?php echo $_GET['q'];?>" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
+                    <button type="submit" class="searchform__submit" onclick="formSearchLoad()"><i class="dl-icon-search10"></i></button>
+                <!-- </form> -->
+                    </div>
             </div>
         </div>
         <!-- Search from End --> 
@@ -547,7 +619,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                             <div class="product-image">
                                 <div class="product-image--holder">
                                     <a href="product-details.html">
-                                        <img id="PrdPhoto" src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
+                                        <img onerror="noimage(this)" id="PrdPhoto" src="assets/img/products/prod-9-1.jpg" alt="Product Image" class="primary-image">
                                     </a>
                                 </div>
                                 <span id="status" class="product-badge new">new</span>
@@ -656,6 +728,97 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     </div>
     <!-- Main Wrapper End -->
 
+        <!-- Modal Line API -->
+        <div class="modal fade lineapi" id="lineapi" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div id="lineapi_content">
+                    <!--
+                    <div class="buttongroup">
+               
+                        <div class="buttonrow">
+                            <button id="openwindowbutton">Open Window</button>
+                            <button id="closewindowbutton">Close Window</button>
+                        </div>
+            
+                        <div class="buttonrow">
+                            <button id="getaccesstoken">Get Access Token</button>
+                            <button id="getprofilebutton">Get Profile</button>
+                            <button id="sendmessagebutton">Send Message</button>
+                        </div>
+                    </div>
+                    -->
+                 
+                    <div id="accesstokendata" style="display: block">
+                        <h2>Access Token</h2>
+                        <!-- <a href="#" onclick="toggleAccessToken()">Close Access Token</a> -->
+                        <table border="1">
+                            <tr>
+                                <th>accessToken</th>
+                                <td id="accesstokenfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="profileinfo" style="display: block">
+                        <h2>Profile</h2>
+                        <!-- <a href="#" onclick="toggleProfileData()">Close Profile</a>-->
+                        <div id="profilepicturediv">
+                        </div>
+                        <table border="1">
+                            <tr>
+                                <th>userId</th>
+                                <td id="useridprofilefield"></td>
+                            </tr>
+                            <tr>
+                                <th>displayName</th>
+                                <td id="displaynamefield"></td>
+                            </tr>
+                            <tr>
+                                <th>statusMessage</th>
+                                <td id="statusmessagefield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="liffdata">
+                        <h2>LIFF Data</h2>
+                        <table border="1">
+                            <tr>
+                                <th>language</th>
+                                <td id="languagefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.viewType</th>
+                                <td id="viewtypefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.userId</th>
+                                <td id="useridfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.utouId</th>
+                                <td id="utouidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.roomId</th>
+                                <td id="roomidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.groupId</th>
+                                <td id="groupidfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal End -->
+
 
     <!-- ************************* JS Files ************************* -->
 
@@ -695,6 +858,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     <script>  
     <?php
       echo 'var cart_total='.$_SESSION['cart_total'].';';
+      echo 'var page_count="'.number_format($page_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";';  echo 'var cate_id="'.$cate_id.'";'; echo 'var order="'.$order.'";';
       echo "var shop_items=JSON.parse('".json_encode($items)."');";
       echo "var items=JSON.parse('".json_encode($_SESSION['items'])."');";
 
@@ -710,9 +874,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#price_wholesale").html(shop_items[id].price_wholesale);
         $("#price_tag").html(shop_items[id].price_tag);
         $("#prd_name").html(decodeURIComponent(shop_items[id].prd_name));
-        var status = ['new','hot','sale']
-        var sts_txt = status[Math.floor(Math.random() * 3)];
-        $("#status").removeClass("new sale hot"); $("#status").addClass(sts_txt); $("#status").html(sts_txt);
+        //var status = ['new','hot','sale','Unknown']
+        //var sts_txt = status[Math.floor(Math.random() * 4)];
+        $("#status").removeClass("new sale hot Unknown"); $("#status").addClass(shop_items[id].badge_status); $("#status").html(shop_items[id].badge_status);
         $("#PrdPhoto").attr("src","../../files/product-o/"+shop_items[id].PrdPhoto);
       }
       function setDefaultProductModal() {
@@ -725,15 +889,34 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#status").removeClass("new sale hot"); $("#status").html("");
         $("#PrdPhoto").attr("src","assets/img/products/prod-9-1.jpg");
       }
+      function formSearchLoad() {
+        if($("#search").val()!='') {
+            window.location.replace("?q="+$("#search").val()+"&pagestart_count="+pagestart_count+"&pageend_count="+pageend_count+"&cate_id="+cate_id+"&order="+order);
+        }else {
+           $("#search").focus(); 
+        }
+      }
     </script>
 
     <script>
-        setTimeout(function(){
-            $(".search-btn.toolbar-btn").click();
-            $("#search").focus();
-        },400);
+        $(document).ready(function(){
+            setTimeout(function(){
+                if($("#search").val()=='') {
+                    $(".search-btn.toolbar-btn").click();
+                    $("#search").focus();
+                }
+            },400);
+            $("#page_count").html(page_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
+
+            setTimeout(function(){
+                fullaction();
+            },1000);
+
+        });
+
     </script>
     
 </body>
-
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="liff-starter.js"></script>
 </html>

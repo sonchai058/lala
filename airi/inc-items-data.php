@@ -4,9 +4,15 @@
 
  $conn = conDB();
 
- $pagestart_count = 0; 
- $pageget_count = 20;
+ $pagestart_count = isset($_GET['pagestart_count'])?$_GET['pagestart_count']:0;
+ $pageend_count = isset($_GET['pageend_count'])?$_GET['pageend_count']:19; 
+ $page_count = 20;
 
+ $q = isset($_GET['q'])?" AND (prd_name like '%{$_GET['q']}%' OR prd_descr like '%{$_GET['q']}%') ":""; 
+ 
+ $cate_id = isset($_GET['cate_id'])?$_GET['cate_id']:'';
+ $order = isset($_GET['order'])?$_GET['order']:'';
+ 
  $search = isset($_GET['search'])?$_GET['search']:'';
 
   $cate = '';
@@ -14,7 +20,7 @@
   $type = $_GET['cate'];
   }
 
- $status = array('new','hot','sale');
+ $status = array('new','hot','sale','Unknown');
 
 /*
 $rows = mysqli_query($conn,"SELECT * FROM items");
