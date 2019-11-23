@@ -1,3 +1,6 @@
+<?php
+ include("./inc-items-data.php");
+?>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -7,8 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="meta description">
     
-    <link rel="shortcut icon" href="./images/logo-lala-black.svg" type="image/x-icon">
-    <link rel="apple-touch-icon" href="./images/logo-lala-black.svg">
+    <link rel="shortcut icon" href="assets/lala/logo.PNG" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/lala/logo.PNG">
+    <link rel="icon" href="assets/lala/logo.PNG" type="image/x-icon">
 
     <!-- Title -->
     <title>โปรไฟล์</title>
@@ -40,6 +44,14 @@
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+      var accesstokenfield = "";
+      var useridprofilefield = "";
+      var displaynamefield = "";
+      var pictureUrl = "";
+      var statusmessagefield = "";
+      var cus_id = "";
+    </script>
 </head>
 
 <body>
@@ -159,7 +171,8 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="accountdetails">
-                                        <form action="#" class="form form--account">
+                                        <form action="#" class="form form--account" name="profile" id="profile" method="get">
+                                            <input type="hidden" name="useridprofilefield"> 
                                             <div class="row grid-space-30 mb--20">
                                                 <div class="col-md-6 mb-sm--20">
                                                     <div class="form__group">
@@ -195,13 +208,13 @@
                                                     <div class="form__group">
                                                         <label class="form__label" for="iso_code">ISO Code</label>
                                                         <div style="float:left;">  
-                                                            <input checked type="radio" value="TH" name="iso_code" id="iso_code" class="form__input"> TH &nbsp;&nbsp;
+                                                            <input checked type="radio" value="TH" name="iso_code" id="" class="form__input"> TH &nbsp;&nbsp;
                                                         </div>
                                                         <div style="float:left">
-                                                            <input type="radio" value="EN" name="iso_code" id="iso_code" class="form__input"> EN &nbsp;&nbsp;
+                                                            <input type="radio" value="EN" name="iso_code" id="" class="form__input"> EN &nbsp;&nbsp;
                                                         </div>
                                                         <div style="float:left">
-                                                        <input type="radio" value="CH" name="iso_code" id="iso_code"     class="form__input"> CH &nbsp;&nbsp;
+                                                        <input type="radio" value="CH" name="iso_code" id=""     class="form__input"> CH &nbsp;&nbsp;
                                                         </div>
                                                     </div>
                                                 </div>
@@ -221,8 +234,15 @@
                                                         <div class="form__group">
                                                             <label class="form__label" for="addr_prov">จังหวัด <span class="required">*</span></label>
                                                             <select type="text" name="addr_prov" id="addr_prov" class="form__input">
-                                                                <option>เลือกจังหวัด</option>
-                                                            
+                                                                <option value="">เลือกจังหวัด</option>
+                                                            <?php
+                                                            $rows = mysqli_query($conn,"select * from sys_area where area_type='Province' AND iso_code='TH'");
+                                                                while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)){
+                                                            ?>
+                                                                <option value="<?php echo $value['area_code'];?>"><?php echo $value['area_name'];?></option>
+                                                            <?php 
+                                                            }
+                                                            ?>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -259,7 +279,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <input type="submit" value="บันทึกข้อมูล" class="btn btn-style-1 btn-submit">
+                                                        <input type="button" id="bt_submit" value="บันทึกข้อมูล" class="btn btn-style-1 btn-submit">
                                                     </div>
                                                 </div>
                                             </div>
@@ -502,6 +522,96 @@
     </div>
     <!-- Main Wrapper End -->
 
+        <!-- Modal Line API -->
+        <div class="modal fade lineapi" id="lineapi" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <div id="lineapi_content">
+                    <!--
+                    <div class="buttongroup">
+               
+                        <div class="buttonrow">
+                            <button id="openwindowbutton">Open Window</button>
+                            <button id="closewindowbutton">Close Window</button>
+                        </div>
+            
+                        <div class="buttonrow">
+                            <button id="getaccesstoken">Get Access Token</button>
+                            <button id="getprofilebutton">Get Profile</button>
+                            <button id="sendmessagebutton">Send Message</button>
+                        </div>
+                    </div>
+                    -->
+                 
+                    <div id="accesstokendata" style="display: block">
+                        <h2>Access Token</h2>
+                        <!-- <a href="#" onclick="toggleAccessToken()">Close Access Token</a> -->
+                        <table border="1">
+                            <tr>
+                                <th>accessToken</th>
+                                <td id="accesstokenfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="profileinfo" style="display: block">
+                        <h2>Profile</h2>
+                        <!-- <a href="#" onclick="toggleProfileData()">Close Profile</a>-->
+                        <div id="profilepicturediv">
+                        </div>
+                        <table border="1">
+                            <tr>
+                                <th>userId</th>
+                                <td id="useridprofilefield"></td>
+                            </tr>
+                            <tr>
+                                <th>displayName</th>
+                                <td id="displaynamefield"></td>
+                            </tr>
+                            <tr>
+                                <th>statusMessage</th>
+                                <td id="statusmessagefield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                 
+                    <div id="liffdata">
+                        <h2>LIFF Data</h2>
+                        <table border="1">
+                            <tr>
+                                <th>language</th>
+                                <td id="languagefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.viewType</th>
+                                <td id="viewtypefield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.userId</th>
+                                <td id="useridfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.utouId</th>
+                                <td id="utouidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.roomId</th>
+                                <td id="roomidfield"></td>
+                            </tr>
+                            <tr>
+                                <th>context.groupId</th>
+                                <td id="groupidfield"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal End -->
 
     <!-- ************************* JS Files ************************* -->
 
@@ -537,11 +647,106 @@
 
     <!-- REVOLUTION ACTIVE JS FILES -->
     <script src="assets/js/revoulation.js"></script>
+
     <script>
         setTimeout(function(){
             $(".nav-link:eq(0)").click();
         },400);
+
+        $("input[name='iso_code']").change(function(){
+          $.ajax({
+                    method: "GET",
+                    url: 'getdata.php',
+                    data: {'iso_code':$(this).val(),'type':'Province'},
+                    success: function(data){
+                        console.log(data);
+                        $("#addr_prov").html("<option value=''>เลือกจังหวัด</option>");
+                        $.each(data.data,function(key,data1){
+                            $("#addr_prov").html($("#addr_prov").html()+"<option value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                        });
+                        $("#addr_city").html("<option value=''>เลือกอำเภอ</option>");
+                        $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
+                        $("#addr_zipcode").val("");
+                    },
+                    error: function(data){
+                        console.log('get province Failed!');
+                    }
+          });
+        });
+        $("#addr_prov").change(function(){
+          $.ajax({
+                    method: "GET",
+                    url: 'getdata.php',
+                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'City','Province':$("#addr_prov").val()},
+                    success: function(data){
+                        console.log(data);
+                        $("#addr_city").html("<option value=''>เลือกอำเภอ</option>");
+                        $.each(data.data,function(key,data1){
+                            $("#addr_city").html($("#addr_city").html()+"<option value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                        });
+                        $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
+                        $("#addr_zipcode").val("");
+                    },
+                    error: function(data){
+                        console.log('get city Failed!');
+                    }
+          });
+        });
+        $("#addr_city").change(function(){
+          $.ajax({
+                    method: "GET",
+                    url: 'getdata.php',
+                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'Suburb','City':$("#addr_city").val()},
+                    success: function(data){
+                        console.log(data);
+                        $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
+                        $.each(data.data,function(key,data1){
+                            $("#addr_suburb").html($("#addr_suburb").html()+"<option data-zipcode='"+data1.area_zipcode+"' value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                        });
+                        $("#addr_zipcode").val("");
+                    },
+                    error: function(data){
+                        console.log('get suburb Failed!');
+                    }
+          });
+        });
+        $("#addr_suburb").change(function(){
+            //console.log($(this).html());
+          $("#addr_zipcode").val($("#addr_suburb option:selected").data("zipcode"));
+        });
+        $("#bt_submit").click(function(){
+            $("input[name='useridprofilefield']").val(useridprofilefield);
+            console.log($("#profile").serialize());
+          /*
+          $.ajax({
+                    method: "POST",
+                    url: 'savemyacc.php',
+                    data: $(""),
+                    success: function(data){
+                        
+                    },
+                    error: function(data){
+                        console.log('บันทึกข้อมูลล้มเหลว!');
+                    }
+          });
+          */
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            setTimeout(function(){
+                fullaction();
+            },1000);
+        });
     </script>
 </body>
-
+<?php
+$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    if($uriSegments[1]!='lala') {
+?>
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="liff-starter.js"></script>
+<?php
+}
+?>
 </html>

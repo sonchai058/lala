@@ -120,6 +120,8 @@ function fullaction() {
 
 		    accesstokenfield = accessToken;
 		    useridprofilefield = profile.userId;
+		    $("input[name='useridprofilefield']").val(useridprofilefield);
+		    $("#cus_fname").val(profile.displayName);
 		    displaynamefield = profile.displayName;
 		    pictureUrl = profile.pictureUrl;
 		    statusmessagefield = profile.statusMessage;

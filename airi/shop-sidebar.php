@@ -925,7 +925,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
             $("#rows_count").html(rows_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
 
             setTimeout(function(){
-                fullaction();
+                //fullaction();
             },1000);
 
         });
@@ -937,8 +937,10 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
 $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     if($uriSegments[1]!='lala') {
 ?>
+    <!--
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="liff-starter.js"></script>
+    -->
 <?php
 }
 ?>
