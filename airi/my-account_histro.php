@@ -64,10 +64,8 @@
                         <div class="col-12">
                             <div class="user-dashboard-tab flex-column flex-md-row">
                                 <div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders" aria-selected="true">Orders</a>
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#addresses" aria-controls="addresses" aria-selected="true">Addresses</a>
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">Account Details</a>
-                                    <a class="nav-link" href="login-register.html">Logout</a>
+                                    <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">โปรไฟล์ (ที่อยู่)</a>
+                                    <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders">ออเดอร์ของฉัน</a>
                                 </div>
                                 <div class="user-dashboard-tab__content tab-content">
                                     <div class="tab-pane fade show active" id="dashboard">
@@ -503,7 +501,7 @@
     <script src="assets/js/revoulation.js"></script>
     <script>
         setTimeout(function(){
-            $(".nav-link:eq(0)").click();
+            $(".nav-link:eq(1)").click();
         },400);
     </script>
 </body>

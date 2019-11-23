@@ -64,10 +64,8 @@
                         <div class="col-12">
                             <div class="user-dashboard-tab flex-column flex-md-row">
                                 <div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders" aria-selected="true">Orders</a>
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#addresses" aria-controls="addresses" aria-selected="true">Addresses</a>
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">Account Details</a>
-                                    <a class="nav-link" href="login-register.html">Logout</a>
+                                    <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">โปรไฟล์ (ที่อยู่)</a>
+                                    <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders">ออเดอร์ของฉัน</a>
                                 </div>
                                 <div class="user-dashboard-tab__content tab-content">
                                     <div class="tab-pane fade show active" id="dashboard">
@@ -165,65 +163,103 @@
                                             <div class="row grid-space-30 mb--20">
                                                 <div class="col-md-6 mb-sm--20">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="f_name">First name <span class="required">*</span></label>
-                                                        <input type="text" name="f_name" id="f_name" class="form__input">
+                                                        <label class="form__label" for="cus_fname">ชื่อ <span class="required">*</span></label>
+                                                        <input type="text" name="cus_fname" id="cus_fname" class="form__input">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="l_name">Last name <span class="required">*</span></label>
-                                                        <input type="text" name="l_name" id="l_name" class="form__input">
+                                                        <label class="form__label" for="cus_lname">นามสกุล <span class="required">*</span></label>
+                                                        <input type="text" name="cus_lname" id="cus_lname" class="form__input">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb--20">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="d_name">Display name <span class="required">*</span></label>
-                                                        <input type="text" name="d_name" id="d_name" class="form__input">
-                                                        <span class="suggestion"><em>This will be how your name will be displayed in the account section and in reviews</em></span>
+                                                        <label class="form__label" for="mobile_no">มือถือ <span class="required">*</span></label>
+                                                        <input type="text" name="mobile_no" id="mobile_no" class="form__input">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb--20">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="email">Email Address <span class="required">*</span></label>
-                                                        <input type="email" name="email" id="email" class="form__input">
+                                                        <label class="form__label" for="email_addr">อีเมล <span class="required">*</span></label>
+                                                        <input type="email" name="email_addr" id="email_addr" class="form__input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb--20">
+                                                <div class="col-12">
+                                                    <div class="form__group">
+                                                        <label class="form__label" for="iso_code">ISO Code</label>
+                                                        <div style="float:left;">  
+                                                            <input checked type="radio" value="TH" name="iso_code" id="iso_code" class="form__input"> TH &nbsp;&nbsp;
+                                                        </div>
+                                                        <div style="float:left">
+                                                            <input type="radio" value="EN" name="iso_code" id="iso_code" class="form__input"> EN &nbsp;&nbsp;
+                                                        </div>
+                                                        <div style="float:left">
+                                                        <input type="radio" value="CH" name="iso_code" id="iso_code"     class="form__input"> CH &nbsp;&nbsp;
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <fieldset class="form__fieldset mb--20">
-                                                <legend class="form__legend">Password change</legend>
+                                                <legend class="form__legend">(ที่อยู่สำหรับจัดส่งสินค้า)</legend>
                                                 <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="cur_pass">Current password (leave blank to leave unchanged)</label>
-                                                            <input type="password" name="cur_pass" id="cur_pass" class="form__input">
+                                                            <label class="form__label" for="cur_pass">ที่อยู่</label>
+                                                            <textarea name="addr_line1" id="addr_line1" class="" rows="7" style="width:100%"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="new_pass">New password (leave blank to leave unchanged)</label>
-                                                            <input type="password" name="new_pass" id="new_pass" class="form__input">
+                                                            <label class="form__label" for="addr_prov">จังหวัด <span class="required">*</span></label>
+                                                            <select type="text" name="addr_prov" id="addr_prov" class="form__input">
+                                                                <option>เลือกจังหวัด</option>
+                                                            
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="conf_new_pass">Confirm new password</label>
-                                                            <input type="password" name="conf_new_pass" id="conf_new_pass" class="form__input">
+                                                            <label class="form__label" for="addr_city">อำเภอ <span class="required">*</span></label>
+                                                            <select type="text" name="addr_city" id="addr_city" class="form__input">
+                                                                <option>เลือกอำเภอ</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="addr_suburb">ตำบล <span class="required">*</span></label>
+                                                            <select type="text" name="addr_suburb" id="addr_suburb" class="form__input">
+                                                                <option>เลือกตำบล</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="row mb--20">
+                                                <div class="col-12">
+                                                    <div class="form__group">
+                                                        <label class="form__label" for="addr_zipcode">รหัสไปรณีย์ <span class="required">*</span></label>
+                                                        <input type="text" name="addr_zipcode" id="addr_zipcode" class="form__input">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             </fieldset>
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <input type="submit" value="Save Changes" class="btn btn-style-1 btn-submit">
+                                                        <input type="submit" value="บันทึกข้อมูล" class="btn btn-style-1 btn-submit">
                                                     </div>
                                                 </div>
                                             </div>
@@ -503,7 +539,7 @@
     <script src="assets/js/revoulation.js"></script>
     <script>
         setTimeout(function(){
-            $(".nav-link:eq(2)").click();
+            $(".nav-link:eq(0)").click();
         },400);
     </script>
 </body>

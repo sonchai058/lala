@@ -1,5 +1,9 @@
+<?php
+     include("./inc-items-data.php");
+?>
+
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="th">
 
 <head>
     <meta charset="utf-8">
@@ -7,8 +11,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="meta description">
     <!-- Favicons -->
-    <link rel="shortcut icon" href="./images/logo-lala-black.svg" type="image/x-icon">
-    <link rel="apple-touch-icon" href="./images/logo-lala-black.svg">
+    <link rel="shortcut icon" href="assets/lala/logo.PNG" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/lala/logo.PNG">
+    <link rel="icon" href="assets/lala/logo.PNG" type="image/x-icon">
 
     <!-- Title -->
     <title>ตระกร้า</title>
@@ -40,6 +45,18 @@
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script>
+      function noimage(image) {
+        image.onerror = "";
+        image.src = 'images/noimage.png';
+        return true;
+      }
+      var accesstokenfield = "";
+      var useridprofilefield = "";
+      var displaynamefield = "";
+      var pictureUrl = "";
+      var statusmessagefield = "";
+    </script>
 </head>
 
 <body>
@@ -71,122 +88,61 @@
                                                     <tr>
                                                         <th>&nbsp;</th>
                                                         <th>&nbsp;</th>
-                                                        <th class="text-left">Product</th>
-                                                        <th>price</th>
-                                                        <th>quantity</th>
-                                                        <th>total</th>
+                                                        <th class="text-left" style="font-size:15px">สินค้า</th></th>
+                                                        <th style="font-size:15px">ราคา</th>
+                                                        <th style="font-size:15px">จำนวน</th>
+                                                        <th style="font-size:15px">รวม</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+<?php
+$subtotal = 0; $shipping = 0; $total = 0; $discount = 0;
+                                    foreach ($_SESSION['items'] as $key => $value) {
+                                      $subtotal=$subtotal+$value['price'];
+?>                                                    
                                                     <tr>
-                                                        <td class="product-remove text-left"><a href=""><i class="dl-icon-close"></i></a></td>
+                                                        <td class="product-remove text-left"><a href="javascript:void(0)" onclick="del('<?php echo $value['prd_id'];?>')"><i class="dl-icon-close"></i></a></td>
                                                         <td class="product-thumbnail text-left">
-                                                            <img src="assets/img/products/prod-14-2-70x81.jpg" alt="Product Thumnail">
+                                                            <img onerror="noimage(this)" width="70px" height="81px" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Thumnail">
                                                         </td>
                                                         <td class="product-name text-left wide-column">
                                                             <h3>
-                                                                <a href="product-details.html">Super skinny blazer</a>
+                                                                <a href="product-details.html"><?php echo urldecode($value['detail']);?></a>
                                                             </h3>
                                                         </td>
                                                         <td class="product-price">
                                                             <span class="product-price-wrapper">
-                                                                <span class="money">$49.00</span>
+                                                                <span class="money">$<?php echo number_format($value['price_tag'],2);?></span>
                                                             </span>
                                                         </td>
                                                         <td class="product-quantity">
                                                             <div class="quantity">
-                                                                <input type="number" class="quantity-input" name="qty" id="qty-1" value="1" min="1">
+                                                                <input type="number" class="quantity-input" name="qty" id="quatity<?php echo $key;?>" data-id="<?php echo $value['prd_id'];?>" data-key="<?php echo $key;?>" value="<?php echo $value['quatity'];?>" min="1">
                                                             </div>
                                                         </td>
                                                         <td class="product-total-price">
                                                             <span class="product-price-wrapper">
-                                                                <span class="money"><strong>$49.00</strong></span>
+                                                                <span class="money"><strong>$<?php echo number_format($value['price'],2);?></strong></span>
                                                             </span>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="product-remove text-left"><a href=""><i class="dl-icon-close"></i></a></td>
-                                                        <td class="product-thumbnail text-left">
-                                                            <img src="assets/img/products/prod-9-1-70x81.jpg" alt="Product Thumnail">
-                                                        </td>
-                                                        <td class="product-name text-left wide-column">
-                                                            <h3>
-                                                                <a href="product-details.html"> Jogging trousers</a>
-                                                            </h3>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money">$49.00</span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <input type="number" class="quantity-input" name="qty" id="qty-2" value="1" min="1">
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-total-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money"><strong>$49.00</strong></span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="product-remove text-left"><a href=""><i class="dl-icon-close"></i></a></td>
-                                                        <td class="product-thumbnail text-left">
-                                                            <img src="assets/img/products/prod-10-1-70x81.jpg" alt="Product Thumnail">
-                                                        </td>
-                                                        <td class="product-name text-left wide-column">
-                                                            <h3>
-                                                                <a href="product-details.html"> Grey blue leather backpack</a>
-                                                            </h3>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money">$49.00</span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <input type="number" class="quantity-input" name="qty" id="qty-3" value="1" min="1">
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-total-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money"><strong>$49.00</strong></span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="product-remove text-left"><a href=""><i class="dl-icon-close"></i></a></td>
-                                                        <td class="product-thumbnail text-left">
-                                                            <img src="assets/img/products/prod-11-1-70x81.jpg" alt="Product Thumnail">
-                                                        </td>
-                                                        <td class="product-name text-left wide-column">
-                                                            <h3>
-                                                                <a href="product-details.html">Dress with belt</a>
-                                                            </h3>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money">$49.00</span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <input type="number" class="quantity-input" name="qty" id="qty-4" value="1" min="1">
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-total-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money"><strong>$49.00</strong></span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+<?php
+}  if(count($_SESSION['items'])<1) { ?>
+                                      <tr>
+                                        <td colspan="5">ไม่มีรายการ..</td>
+                                    </tr>
+<?php
+}
+$discount = 0;
+$total= $shipping+$subtotal-$discount;
+$total = $total <0?0:$total;
+?>
                                                 </tbody>
                                             </table>
                                         </div>  
                                     </div>
                                 </div>
+                                <!--
                                 <div class="row no-gutters border-top pt--20 mt--20">
                                     <div class="col-sm-6">
                                         <div class="coupon">
@@ -199,21 +155,25 @@
                                         <button type="submit" class="cart-form__btn">Update Cart</button>
                                     </div>
                                 </div>
+                                -->
                             </form>
                         </div>
                         <div class="col-lg-4">
                             <div class="cart-collaterals">
                                 <div class="cart-totals">
-                                    <h5 class="mb--15">Cart totals</h5>
+                                    <h5 class="mb--15">ราคาในตะกร้า</h5>
                                     <div class="table-content table-responsive">
                                         <table class="table order-table">
                                             <tbody>
+                                                <!--
                                                 <tr>
-                                                    <th>Subtotal</th>
+                                                    <th>ทังหมด</th>
                                                     <td>$196.00</td>  
                                                 </tr>
+                                                -->
+                                                <!--
                                                 <tr>
-                                                    <th>Shipping</th>
+                                                    <th>จัดส่ง</th>
                                                     <td>
                                                         <span>Flat rate: $20.00</span>
                                                         <div class="shipping-calculator-wrap">
@@ -320,11 +280,12 @@
                                                         </div>
                                                     </td>  
                                                 </tr>
+                                                -->
                                                 <tr class="order-total">
-                                                    <th>Total</th>
+                                                    <th>รวม</th>
                                                     <td>
                                                         <span class="product-price-wrapper">
-                                                            <span class="money">$226.00</span>
+                                                            <span class="money">$<?php echo number_format($total,2);?></span>
                                                         </span>
                                                     </td>
                                                 </tr>
@@ -333,7 +294,7 @@
                                     </div>
                                 </div>
                                 <a href="checkout.html" class="btn btn-fullwidth btn-style-1">
-                                    Proceed To Checkout
+                                    ดำเนินการขั้นตอนต่อไป
                                 </a>
                             </div>
                         </div>
@@ -608,5 +569,32 @@
     <script src="assets/js/revoulation.js"></script>
     
 </body>
+    <script>
+    <?php
+      echo 'var cus_id="";'; 
+    ?>       
+        $(document).ready(function(){
+            $(".quantity .qtybutton.dec").click(function(){
+                //console.log($(this).prev().val());
+                del2Cart($(this).prev().data('id'));
+            });
+            $(".quantity .qtybutton.inc").click(function(){
+                //console.log($(this).prev().prev().val());
+                add2Cart($(this).prev().prev().data('id'),1);
+            });
+        });
 
+        //$(".inc.qtybutton").val();        
+    </script>
+    <script src="cart.js"></script>
+
+<?php
+$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    if($uriSegments[1]!='lala') {
+?>
+    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
+    <script src="liff-starter.js"></script>
+<?php
+}
+?>
 </html>

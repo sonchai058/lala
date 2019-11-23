@@ -1,18 +1,18 @@
 <?php 
 require("inc-items-data.php");
 
-$sql = "(SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd 
-LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id 
-LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  
-LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id 
-WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'{$q}";
+//die('<pre>'.print_r($_SESSION['items']).'</pre>');
 
-$rows = mysqli_query($conn,"SELECT *,".$sql." limit {$pagestart_count},20");
+$qstr = isset($_GET['q'])?" AND (prd_name like '%{$_GET['q']}%' OR prd_descr like '%{$_GET['q']}%') ":"";
+
+$sql = "(SELECT sto_prd_photo.photo_val FROM sto_prd_photo WHERE sto_prd_photo.prd_id=sto_prd.prd_id AND sto_prd_photo.cover_status='Yes' ) AS PrdPhoto FROM sto_prd LEFT JOIN sto_brand ON sto_prd.brand_id=sto_brand.brand_id LEFT JOIN sto_cate ON sto_prd.cate_id=sto_cate.cate_id AND sto_cate.iso_code='TH'  LEFT JOIN sto_unit ON sto_prd.unit_id=sto_unit.unit_id WHERE sto_prd.bsn_id='1' AND sto_prd.iso_code='TH' AND sto_prd.del_status='No' AND sto_prd.public_status='Yes'{$qstr}";
+
+$rows = mysqli_query($conn,"SELECT *,".$sql." limit {$pagestart_count},$page_count");
 $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
-
+$sql = "SELECT *,".$sql." limit {$pagestart_count},$page_count";
 ?>
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="th">
 
 <head>
     <meta charset="utf-8">
@@ -60,7 +60,6 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
         image.src = 'images/noimage.png';
         return true;
       }
-
       var accesstokenfield = "";
       var useridprofilefield = "";
       var displaynamefield = "";
@@ -94,13 +93,13 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
                 <div class="container-fluid">
                     <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
                         <li class="header-toolbar__item">
-                            <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                            <a onclick="window.location.replace('cart.php')" href="javascript:void(0)" class="mini-cart-btn toolbar-btn" style="color:#333">
                                 <i class="dl-icon-cart4"></i>
-                                <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                                <sup class="mini-cart-count cart_total" style="background-color:#f00"><?php echo $_SESSION['cart_total'];?></sup>
                             </a>
                         </li>
                         <li class="header-toolbar__item">
-                            <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                            <a onclick="window.location.replace('my-account.php')" href="javascript:void(0)" class="toolbar-btn" style="color:#333">
                                 <i class="dl-icon-user1"></i>
                             </a>
                         </li>
@@ -135,13 +134,13 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
                     <div class="col-12 text-center">
                         <ul class="tools" style="position: absolute; top:2px; right:0px; list-style: none;">
                             <li class="header-toolbar__item">
-                                <a onclick="/*window.location.replace('cart.php')*/" href="cart.php" class="mini-cart-btn toolbar-btn" style="color:#333">
+                                <a onclick="window.location.replace('cart.php')" href="javascript:void(0)" class="mini-cart-btn toolbar-btn" style="color:#333">
                                     <i class="dl-icon-cart4"></i>
-                                    <sup class="mini-cart-count" style="background-color:#f00">0</sup>
+                                    <sup class="mini-cart-count cart_total" style="background-color:#f00"><?php echo $_SESSION['cart_total'];?></sup>
                                 </a>
                             </li>
                             <li class="header-toolbar__item">
-                                <a onclick="/*window.location.replace('my-account.php')*/" href="my-account.php" class="search-btn toolbar-btn" style="color:#333">
+                                <a onclick="window.location.replace('my-account.php')" href="javascript:void(0)" class="toolbar-btn" style="color:#333">
                                     <i class="dl-icon-user1"></i>
                                 </a>
                             </li>
@@ -168,7 +167,7 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
                                     <div class="row align-items-center">
                                         <div class="col-md-6 text-md-left text-center mb-sm--20">
                                             <div class="shop-toolbar__left">
-                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="page_count"><?php echo $page_count;?></span> รายการ</p>
+                                                <p class="product-pages">แสดง <span id="pagestart_count"><?php echo $pagestart_count;?></span>–<span id="pageend_count"><?php echo $pageend_count;?></span> จากทั้งหมด <span id="rows_count"><?php echo $page_count;?></span> รายการ</p>
                                                 <!--
                                                 <div class="product-view-count">
                                                     <p>แสดง</p>
@@ -367,21 +366,17 @@ $rows1 = mysqli_query($conn,"SELECT count(prd_id) as cc,sto_prd.*,".$sql);
 $items = array();
 $key = 0;
 $tmp = mysqli_fetch_array($rows1,MYSQLI_ASSOC);
-$page_count = @$tmp['cc']; 
+$rows_count = @$tmp['cc']; 
 while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {  
   $items[$value['prd_id']] = array(
     'prd_id'=>$value['prd_id'],
     'PrdPhoto'=>$value['PrdPhoto'],
     'prd_name'=>urlencode($value['prd_name']).' ('.urlencode($value['unit_name']).')',
-    'price_tag'=>number_format($value['price_tag'],2),
-    'price_retail'=>number_format($value['price_retail'],2),
-    'price_wholesale'=>number_format($value['price_wholesale'],2),
+    'price'=>$value['price_tag'],
+    'price_tag'=>$value['price_tag'],
+    'price_retail'=>$value['price_retail'],
+    'price_wholesale'=>$value['price_wholesale'],
     'prd_descr'=>urlencode($value['prd_descr']),
-    /*
-    'nameEn'=>$value['name'],
-    'nameCh'=>$value['name'],
-    'nameTh'=>$value['name'],
-    */
     'unit_name'=>urlencode($value['unit_name']),
     'brand_name'=>urlencode($value['brand_name']),
     'cate_id'=>$value['cate_id'],
@@ -418,7 +413,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                                     <i class="dl-icon-view"></i>
                                                                 </span>
                                                             </a>
-                                                            <a class="add_to_cart_btn action-btn" href="cart.html" data-toggle="tooltip" data-placement="top" title="หยิบใส่ตะกร้า">
+                                                            <a class="add_to_cart_btn action-btn" href="javascript:void(0)"  onclick="add2Cart(<?php echo $value['prd_id'];?>,1)" data-toggle="tooltip" data-placement="top" title="หยิบใส่ตะกร้า">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
                                                             <!--
@@ -468,21 +463,38 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                             </style>
                             <nav class="pagination-wrap">
                                 <ul class="pagination" style="display: table;">
-                                    <li><a href="#" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
+                                <?php 
+                                $page_pre_start = $pagestart_count-$page_count;
+                                $page_pre_start = $page_pre_start<0?0:$page_pre_start;
+                                $page_pre_end = (($pageend_count+1)-$page_count)-1;
+                                $page_pre_end = $page_pre_end<0?$page_count:$page_pre_end;
+                                ?>
+                                    <li><a href="?pagestart_count=<?php echo $page_pre_start;?>&pageend_count=<?php echo $page_pre_end;?>" class="prev page-number"><i class="fa fa-angle-double-left"></i></a></li>
                                 <?php
                                  
-                                $count = ($page_count/20);
+                                $count = ($rows_count/$page_count);
                                 $count = (int)$count;
-                                if($page_count%20>0) {
+                                if($rows_count%$page_count>0) {
                                     $count = $count+1;
-                                }                               
+                                }  
+
+                                $page_stop_next_start = "";
+                                $page_stop_next_end = "";                              
                                 for($i=0;$i<$count;$i++){
                                 ?>
-                                    <li><a href="?pagestart_count=<?php echo ($i*20);?>&pageend_count=<?php echo ((($i+1)*20)-1);?>" class="<?php if($i==($pagestart_count/20)){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
+                                    <li><a href="?pagestart_count=<?php echo ($i*$page_count);?>&pageend_count=<?php echo ((($i+1)*$page_count)-1);?>" class="<?php if($i==($pagestart_count/$page_count)){?> current <?php }?> page-number"><?php echo ($i+1);?></a></li>
                                 <?php
+                                    if(($i+1)==$count) {
+                                       $page_stop_next_start = ($i*$page_count);
+                                       $page_stop_next_end = ((($i+1)*$page_count)-1);
+                                    }
                                 }
+                                $page_next_start = $pagestart_count+20;
+                                $page_next_start = $page_next_start>$page_stop_next_start?$page_stop_next_start:$page_next_start;
+                                $page_next_end = $pageend_count+20;
+                                $page_next_end = $page_next_end>$page_stop_next_end?$page_stop_next_end:$page_next_end;
                                 ?>
-                                    <li><a href="#" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
+                                    <li><a href="?pagestart_count=<?php echo $page_next_start;?>&pageend_count=<?php echo $page_next_end;?>" class="next page-number"><i class="fa fa-angle-double-right"></i></a></li>
 
                                 </ul>
                             </nav>
@@ -504,7 +516,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                 <p>LalaBeauty Shop</p>
                 <!-- <form class="searchform"> -->
                     <div class="searchform">
-                    <input type="text" value="<?php echo $_GET['q'];?>" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
+                    <input type="text" value="<?php echo $q;?>" name="search" id="search" class="searchform__input" placeholder="ค้นหาสินค้าที่ต้องการ...">
                     <button type="submit" class="searchform__submit" onclick="formSearchLoad()"><i class="dl-icon-search10"></i></button>
                 <!-- </form> -->
                     </div>
@@ -531,6 +543,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         <!-- Breadcrumb area End -->
 
         <!-- Mini Cart Start -->
+        <!--
         <aside class="mini-cart" id="miniCart">
             <div class="mini-cart-wrapper">
                 <a href="" class="btn-close"><i class="dl-icon-close"></i></a>
@@ -599,6 +612,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                 </div>
             </div>
         </aside>
+    -->
         <!-- Mini Cart End -->
 
         <!-- Global Overlay Start -->
@@ -654,17 +668,18 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                         -->
                             <h3 class="product-title mb--15" id="prd_name" style="word-break: break-all;">&nbsp;</h3>
                             <span class="product-price-wrapper mb--20">
+                                <input type="hidden" id="prd_id" value="0">
                                 <span class="money">$<span id="price_tag">00.00</span></span>
                                 <span class="product-price-old">
                                     <span class="money">$<span id="price_wholesale">00.00</span></span>
                                 </span>
                             </span>
-                            <p class="product-short-description mb--25 mb-md--20" id="prd_descr">&nbsp;</p>
+                            <p class="product-short-description mb--25 mb-md--20" id="prd_descr" style="word-break: break-all;">&nbsp;</p>
                             <div class="product-action d-flex flex-row align-items-center mb--30">
                                 <div class="quantity">
-                                    <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
+                                    <input type="number" class="quantity-input" name="qty" step="1" id="qty" value="1" min="1" max="10">
                                 </div>
-                                <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="window.location.href='cart.html'">
+                                <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="add2Cart($('#prd_id').val(),$('#qty').val())">
                                     หยิบใส่ตะกร้า
                                 </button>
                             <!--   
@@ -857,22 +872,23 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
 
     <script>  
     <?php
-      echo 'var cart_total='.$_SESSION['cart_total'].';';
-      echo 'var page_count="'.number_format($page_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";';  echo 'var cate_id="'.$cate_id.'";'; echo 'var order="'.$order.'";';
+      echo 'var cus_id="";'; 
+      echo 'var rows_count="'.number_format($rows_count).'";'; echo 'var pagestart_count="'.number_format($pagestart_count+1).'";'; echo 'var pageend_count="'.number_format($pageend_count+1).'";';  echo 'var cate_id="'.$cate_id.'";'; echo 'var order="'.$order.'";';
       echo "var shop_items=JSON.parse('".json_encode($items)."');";
       echo "var items=JSON.parse('".json_encode($_SESSION['items'])."');";
 
-      $_SESSION['cart_total'] = count($_SESSION['items']);
       echo 'var cart_total='.$_SESSION['cart_total'].';';
     ?>
       function productSet(id) {
         setDefaultProductModal();
         console.log(id);
+        $('#prd_id').val(shop_items[id].prd_id);
+        $('#qty').val(1);
         $("#cate_name").html(decodeURIComponent(shop_items[id].cate_name));
         $("#brand_name").html(decodeURIComponent(shop_items[id].brand_name));
         $("#prd_descr").html(decodeURIComponent(shop_items[id].prd_descr));
-        $("#price_wholesale").html(shop_items[id].price_wholesale);
-        $("#price_tag").html(shop_items[id].price_tag);
+        $("#price_wholesale").html(currencyFormat(parseFloat(shop_items[id].price_wholesale)));
+        $("#price_tag").html(currencyFormat(parseFloat(shop_items[id].price_tag)));
         $("#prd_name").html(decodeURIComponent(shop_items[id].prd_name));
         //var status = ['new','hot','sale','Unknown']
         //var sts_txt = status[Math.floor(Math.random() * 4)];
@@ -906,17 +922,24 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                     $("#search").focus();
                 }
             },400);
-            $("#page_count").html(page_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
+            $("#rows_count").html(rows_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
 
             setTimeout(function(){
                 fullaction();
             },1000);
 
         });
-
     </script>
     
 </body>
+    <script src="cart.js"></script>
+<?php
+$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+    if($uriSegments[1]!='lala') {
+?>
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="liff-starter.js"></script>
+<?php
+}
+?>
 </html>
