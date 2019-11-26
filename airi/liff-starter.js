@@ -45,8 +45,9 @@ function initializeApp(data) {
  
     // get access token
     document.getElementById('getaccesstoken').addEventListener('click', function () {
-        const accessToken = liff.getAccessToken();
-        document.getElementById('accesstokenfield').textContent = accessToken;
+		const accessToken = liff.getAccessToken();
+    
+    document.getElementById('accesstokenfield').textContent = accessToken;
         toggleAccessToken();
     });
  
@@ -95,55 +96,63 @@ function toggleElement(elementId) {
 
 function fullaction() {
 
-   const accessToken = liff.getAccessToken();
+	const accessToken = liff.getAccessToken();
+
    document.getElementById('accesstokenfield').textContent = accessToken;
    
-   setTimeout(function(){
-        liff.getProfile().then(function (profile) {
-			//alert(JSON.stringify(profile));
-            document.getElementById('useridprofilefield').textContent = profile.userId;
-            document.getElementById('displaynamefield').textContent = profile.displayName;
- 
-            const profilePictureDiv = document.getElementById('profilepicturediv');
-            if (profilePictureDiv.firstElementChild) {
-                profilePictureDiv.removeChild(profilePictureDiv.firstElementChild);
-            }
-            const img = document.createElement('img');
-            img.src = profile.pictureUrl;
-            img.alt = "Profile Picture";
-            profilePictureDiv.appendChild(img);
- 
-            document.getElementById('statusmessagefield').textContent = profile.statusMessage;
-            //toggleProfileData();
-			
-			//$("#lineapi").modal();
+   if(accessToken!=null) {
+	   setTimeout(function(){
+	        liff.getProfile().then(function (profile) {
+				//alert(JSON.stringify(profile));
+	            document.getElementById('useridprofilefield').textContent = profile.userId;
+	            document.getElementById('displaynamefield').textContent = profile.displayName;
+	 
+	            const profilePictureDiv = document.getElementById('profilepicturediv');
+	            if (profilePictureDiv.firstElementChild) {
+	                profilePictureDiv.removeChild(profilePictureDiv.firstElementChild);
+	            }
+	            const img = document.createElement('img');
+	            img.src = profile.pictureUrl;
+	            img.alt = "Profile Picture";
+	            profilePictureDiv.appendChild(img);
+	 
+	            document.getElementById('statusmessagefield').textContent = profile.statusMessage;
+	            //toggleProfileData();
+				
+				//$("#lineapi").modal();
 
-		    accesstokenfield = accessToken;
-		    useridprofilefield = profile.userId;
-		    $("input[name='useridprofilefield']").val(useridprofilefield);
-		    $("#cus_fname").val(profile.displayName);
-		    displaynamefield = profile.displayName;
-		    pictureUrl = profile.pictureUrl;
-		    statusmessagefield = profile.statusMessage;
+			    accesstokenfield = accessToken;
+			    useridprofilefield = profile.userId;
+			    $("input[name='useridprofilefield']").val(useridprofilefield);
+			    $("#cus_fname").val(profile.displayName);
+			    displaynamefield = profile.displayName;
+			    pictureUrl = profile.pictureUrl;
+			    statusmessagefield = profile.statusMessage;
 
-        }).catch(function (error) {
-            window.alert("Error getting profile: " + error);
-        });   
+			    getInfo('line_id');
 
-        liff.sendMessages([{
-            type: 'text',
-            text: "ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
-        }, {
-            type: 'sticker',
-            packageId: '2',
-            stickerId: '144'
-        }]).then(function () {
-            //window.alert("Message sent");
-        }).catch(function (error) {
-            window.alert("Error sending message: " + error);
-        });
+			    $("#load").hide();
+			    $("#bt_submit").attr('disabled',false);
+
+	        }).catch(function (error) {
+	            window.alert("Error getting profile: " + error);
+	        });   
+
+	        liff.sendMessages([{
+	            type: 'text',
+	            text: "ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
+	        }, {
+	            type: 'sticker',
+	            packageId: '2',
+	            stickerId: '144'
+	        }]).then(function () {
+	            //window.alert("Message sent");
+	        }).catch(function (error) {
+	            window.alert("Error sending message: " + error);
+	        });
 
 
-   },1000);
+	   },1000);
+	}
 
 }

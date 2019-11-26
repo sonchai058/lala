@@ -171,8 +171,9 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="accountdetails">
-                                        <form action="#" class="form form--account" name="profile" id="profile" method="get">
-                                            <input type="hidden" name="useridprofilefield"> 
+                                        <form action="#" class="form form--account" name="profile" id="profile" method="post">
+                                            <input type="hidden" name="useridprofilefield">
+                                            <div id="load" style="position:absolute; right:0; top:0">กำลังเชื่อมโยงกับไลน์...</div> 
                                             <div class="row grid-space-30 mb--20">
                                                 <div class="col-md-6 mb-sm--20">
                                                     <div class="form__group">
@@ -182,23 +183,30 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="cus_lname">นามสกุล <span class="required">*</span></label>
+                                                        <label class="form__label" for="cus_lname">นามสกุล</label>
                                                         <input type="text" name="cus_lname" id="cus_lname" class="form__input">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb--20">
-                                                <div class="col-12">
+                                                <div class="col-6">
                                                     <div class="form__group">
                                                         <label class="form__label" for="mobile_no">มือถือ <span class="required">*</span></label>
                                                         <input type="text" name="mobile_no" id="mobile_no" class="form__input">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form__group">
+                                                    <label class="form__label" for="bt_search_mobile">&nbsp;</label>
+                                                        <a href="javascript:void(0)" class="btn btn-style-1 btn-submit" id="bt_search_mobile" style="margin-top: -3px;margin-left: -10px;color:#fff;/* width: 15px !important; */padding: 17px;"><i class="dl-icon-search10">&nbsp;ค้นจากเบอร์&nbsp;&nbsp;</i></a>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row mb--20">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <label class="form__label" for="email_addr">อีเมล <span class="required">*</span></label>
+                                                        <label class="form__label" for="email_addr">อีเมล</label>
                                                         <input type="email" name="email_addr" id="email_addr" class="form__input">
                                                     </div>
                                                 </div>
@@ -279,7 +287,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <input type="button" id="bt_submit" value="บันทึกข้อมูล" class="btn btn-style-1 btn-submit">
+                                                        <input type="button" disabled="true" id="bt_submit" value="บันทึกข้อมูล" class="btn btn-style-1 btn-submit">
                                                     </div>
                                                 </div>
                                             </div>
@@ -653,36 +661,49 @@
             $(".nav-link:eq(0)").click();
         },400);
 
-        $("input[name='iso_code']").change(function(){
+        function iso_code_change(iso_code_val,data_select) {
           $.ajax({
                     method: "GET",
                     url: 'getdata.php',
-                    data: {'iso_code':$(this).val(),'type':'Province'},
+                    data: {'iso_code':iso_code_val,'type':'Province'},
                     success: function(data){
                         console.log(data);
                         $("#addr_prov").html("<option value=''>เลือกจังหวัด</option>");
                         $.each(data.data,function(key,data1){
-                            $("#addr_prov").html($("#addr_prov").html()+"<option value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                            var chk = '';
+                            if(data_select==data1.area_code) {
+                                chk = "selected";
+                            }
+                            $("#addr_prov").html($("#addr_prov").html()+"<option "+chk+" value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
                         });
                         $("#addr_city").html("<option value=''>เลือกอำเภอ</option>");
                         $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
                         $("#addr_zipcode").val("");
+                        $("#iso_code").val(iso_code_val);
                     },
                     error: function(data){
                         console.log('get province Failed!');
                     }
           });
+        }
+        $("input[name='iso_code']").change(function(){
+            iso_code_change($(this).val(),'');
         });
-        $("#addr_prov").change(function(){
+
+        function addr_prov_change(addr_prov_val,data_select){
           $.ajax({
                     method: "GET",
                     url: 'getdata.php',
-                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'City','Province':$("#addr_prov").val()},
+                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'City','Province':addr_prov_val},
                     success: function(data){
                         console.log(data);
                         $("#addr_city").html("<option value=''>เลือกอำเภอ</option>");
                         $.each(data.data,function(key,data1){
-                            $("#addr_city").html($("#addr_city").html()+"<option value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                            var chk = '';
+                            if(data_select==data1.area_code) {
+                                chk = "selected";
+                            }
+                            $("#addr_city").html($("#addr_city").html()+"<option "+chk+" value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
                         });
                         $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
                         $("#addr_zipcode").val("");
@@ -690,18 +711,27 @@
                     error: function(data){
                         console.log('get city Failed!');
                     }
-          });
+          }); 
+        }
+        $("#addr_prov").change(function(){
+            addr_prov_change($("#addr_prov").val(),'');
         });
-        $("#addr_city").change(function(){
+
+        function addr_city_change(addr_city_val,data_select) {
           $.ajax({
                     method: "GET",
                     url: 'getdata.php',
-                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'Suburb','City':$("#addr_city").val()},
+                    data: {'iso_code':$("input[name='iso_code']").val(),'type':'Suburb','City':addr_city_val},
                     success: function(data){
                         console.log(data);
                         $("#addr_suburb").html("<option value=''>เลือกตำบล</option>");
+                        
                         $.each(data.data,function(key,data1){
-                            $("#addr_suburb").html($("#addr_suburb").html()+"<option data-zipcode='"+data1.area_zipcode+"' value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
+                            var chk = '';
+                            if(data_select==data1.area_code) {
+                                chk = "selected";
+                            }
+                            $("#addr_suburb").html($("#addr_suburb").html()+"<option "+chk+" data-zipcode='"+data1.area_zipcode+"' value='"+data1.area_code+"'>"+data1.area_name+"</option>"); 
                         });
                         $("#addr_zipcode").val("");
                     },
@@ -709,26 +739,68 @@
                         console.log('get suburb Failed!');
                     }
           });
+        }
+        $("#addr_city").change(function(){
+            addr_city_change($("#addr_city").val(),'');
         });
+
+        function addr_suburb_change() {
+            $("#addr_zipcode").val($("#addr_suburb option:selected").data("zipcode"));
+        }
         $("#addr_suburb").change(function(){
             //console.log($(this).html());
-          $("#addr_zipcode").val($("#addr_suburb option:selected").data("zipcode"));
+            addr_suburb_change();
         });
+
         $("#bt_submit").click(function(){
+
             $("input[name='useridprofilefield']").val(useridprofilefield);
             console.log($("#profile").serialize());
-          /*
-          $.ajax({
-                    method: "POST",
-                    url: 'savemyacc.php',
-                    data: $(""),
-                    success: function(data){
-                        
-                    },
-                    error: function(data){
-                        console.log('บันทึกข้อมูลล้มเหลว!');
+
+           if($("input[name='useridprofilefield']").val()=='') {
+            alert("เชื่อมโยงกับไลน์ล้มเหลว!");
+           }else if($("#cus_fname").val()==''){
+            alert("กรุณากรอกชื่อ!");
+            $("#cus_fname").focus();
+           }else if($("#mobile_no").val()==''){
+            alert("กรุณาเบอร์ติดต่อ!");
+            $("#mobile_no").focus();
+           }else if($("#addr_prov").val()==''){
+            alert("กรุณาเลือกจังหวัด!");
+            $("#addr_prov").focus();
+           }else if($("#addr_city").val()==''){
+            alert("กรุณาเลือกอำเภอ!");
+            $("#addr_city").focus();
+           }else if($("#addr_suburb").val()==''){
+            alert("กรุณาเลือกตำบล!");
+            $("#addr_suburb").focus();
+           }else {
+              $("#load").html("กำลังบันทึกข้อมูล...");
+              $("#bt_submit").attr('disabled',true);
+              $.ajax({
+                method: "POST",
+                url: 'savemyacc.php',
+                data: $("#profile").serialize(),
+                success: function(data){
+                    console.log(data);
+                    if(data.staus=='ok') {
+                        alert("บันทึกข้อมูลสำเร็จ...");
+                        $("#load").html("บันทึกข้อมูลสำเร็จ...");
+                    }else {
+                        alert("บันทึกข้อมูลล้มเหลว...");
+                        $("#load").html("บันทึกข้อมูลล้มเหลว...");
                     }
-          });
+                    $("#bt_submit").attr('disabled',false);      
+                },
+                error: function(data){
+                    console.log('บันทึกข้อมูลล้มเหลว!');
+                    $("#bt_submit").attr('disabled',false);
+                }
+              });
+           } 
+           
+          /*
+
           */
         });
     </script>
@@ -738,6 +810,71 @@
                 fullaction();
             },1000);
         });
+        $("#bt_search_mobile").click(function(){
+           $("#bt_search_mobile").attr('disabled',true);
+           if($("#mobile_no").val()==''){
+            alert("กรุณาเบอร์ติดต่อ!");
+            $("#mobile_no").focus();
+           }else {
+            getInfo('mobile_no');
+           }
+           $("#bt_search_mobile").attr('disabled',false);
+        });
+        function getInfo(type) {
+            $("#bt_submit").attr('disabled',true); 
+              $.ajax({
+                method: "GET",
+                url: 'getAccount.php',
+                data: {'type':type,'mobile_no':$("#mobile_no").val(),'useridprofilefield':useridprofilefield},
+                success: function(data){
+                    console.log(data);
+                    if(data.staus=='ok') {
+                        if(type=='mobile_no'){alert("พบข้อมูลสมาชิก...");$("#bt_search_mobile").hide();}
+                        $("#cus_fname").val(data.data.cus_fname);
+                        $("#cus_lname").val(data.data.cus_lname);
+                        $("#mobile_no").val(data.data.mobile_no);
+                        $("#email_addr").val(data.data.email_addr);
+                        
+                        cus_id = data.data.cus_id;
+
+                        //$("#iso_code").val(data.data.iso_code);
+                        iso_code_change(data.data.iso_code,data.data.addr_prov);
+
+                        $("#addr_line1").html(data.data.addr_line1);
+
+                        if(useridprofilefield==null) {
+                            $("input[name='useridprofilefield']").val(data.data.line_id);
+                            useridprofilefield=data.data.line_id;
+                        }
+
+                        //$("#addr_prov").val(data.data.addr_prov);
+                        setTimeout(function(){addr_prov_change(data.data.addr_prov,data.data.addr_city)},500);
+
+                        //$("#addr_city").val(data.data.addr_city);
+                        setTimeout(function(){addr_city_change(data.data.addr_city,data.data.addr_suburb);},1000);
+
+                        //$("#addr_suburb").val(data.data.addr_suburb);
+                        //alert(data.data.addr_suburb);
+                        setTimeout(function(){$("#addr_zipcode").val(data.data.addr_zipcode);},2000);
+                        //addr_suburb_change(data.data.addr_suburb);
+                        //alert(data.data.addr_zipcode);
+                        
+                    }else {
+                        if(type=='mobile_no') {
+                            alert("ไม่พบสมาชิกข้อมูล...");
+                        }else {
+                            $("#load").html("เชื่อมโยงกับ Line สำเร็จ...");
+                            $("#load").hide();
+                        }
+                    }
+                    $("#bt_submit").attr('disabled',false);      
+                },
+                error: function(data){
+                    console.log('การดึงข้อมูลล้มเหลว!');
+                    $("#bt_submit").attr('disabled',false);  
+                }
+              });
+        }
     </script>
 </body>
 <?php
@@ -748,5 +885,6 @@ $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     <script src="liff-starter.js"></script>
 <?php
 }
+mysqli_close($conn);
 ?>
 </html>

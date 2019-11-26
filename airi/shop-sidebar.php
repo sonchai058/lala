@@ -429,7 +429,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                     <?php 
                                                     //$sts = $status[rand(0,3)];
                                                     ?>
-                                                    <span class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?>;?></span>
+                                                    <span class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?></span>
                                                 </figure>
                                                 <div class="product-info text-center">
                                                     <h3 class="product-title">
@@ -943,5 +943,6 @@ $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     -->
 <?php
 }
+mysqli_close($conn);
 ?>
 </html>
