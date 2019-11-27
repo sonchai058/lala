@@ -44,11 +44,11 @@ foreach ($items_cart as $key => $value) {
  	if($value['prd_id']==$_GET['prd_id']) {
  		if(!isset($_GET['del'])) {
  			$items_cart[$key]['quatity'] = $items_cart[$key]['quatity']+$_GET['quatity'];
- 			$items_cart[$key]['price'] = $items_cart[$key]['price']+($value0['price_tag']*$_GET['quatity']);
+ 			$items_cart[$key]['price'] = $items_cart[$key]['price']+($value0['price_retail']*$_GET['quatity']);
  		}else {
       if($items_cart[$key]['quatity']-1<1){unset($items_cart[$key]);$ck=1;continue;}
  			$items_cart[$key]['quatity'] = $items_cart[$key]['quatity']-1;
- 			$items_cart[$key]['price'] = $items_cart[$key]['price']-$value0['price_tag'];
+ 			$items_cart[$key]['price'] = $items_cart[$key]['price']-$value0['price_retail'];
  		}
  		$ck=1;
  	}
@@ -58,12 +58,12 @@ if($ck==0) {
 
 	 $items_cart[count($_SESSION['items'])] = array(
 	        'PrdPhoto'=> $value0['PrdPhoto'],
+	        'ship_fee_status'=>$value0['ship_fee_status'],
 	        'prd_id'=> $_GET['prd_id'],
 	        'quatity'=> $_GET['quatity'],
           'price'=> ($value0['price_tag']*$_GET['quatity']),
 	        'price_tag'=> $value0['price_tag'],
           'price_retail'=> $value0['price_retail'],
-          'price_wholesale'=> $value0['price_wholesale'],
 	        'detail'=> urlencode($value0['prd_name'])
 	      );
 }

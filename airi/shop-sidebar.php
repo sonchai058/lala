@@ -65,6 +65,8 @@ $sql = "SELECT *,".$sql." limit {$pagestart_count},$page_count";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
+      var cus_id = "";
+      var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
 </head>
 
@@ -372,10 +374,9 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     'prd_id'=>$value['prd_id'],
     'PrdPhoto'=>$value['PrdPhoto'],
     'prd_name'=>urlencode($value['prd_name']).' ('.urlencode($value['unit_name']).')',
-    'price'=>$value['price_tag'],
+    'price'=>$value['price_retail'],
     'price_tag'=>$value['price_tag'],
     'price_retail'=>$value['price_retail'],
-    'price_wholesale'=>$value['price_wholesale'],
     'prd_descr'=>urlencode($value['prd_descr']),
     'unit_name'=>urlencode($value['unit_name']),
     'brand_name'=>urlencode($value['brand_name']),
@@ -383,7 +384,8 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     'prd_code'=>$value['prd_code'],
     'unit_id'=>$value['unit_id'],
     'cate_name'=>urlencode($value['cate_name']),
-    'badge_status'=>$value['badge_status']
+    'badge_status'=>$value['badge_status'],
+    'ship_fee_status'=>$value['ship_fee_status']
   );
   /*
   if($type!=$value['type'] && $type!="") {
@@ -436,7 +438,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                         <a href="product-details.html"><?php echo $value['prd_name'].' ('.$value['unit_name'].')';?></a>
                                                     </h3>
                                                     <span class="product-price-wrapper">
-                                                        <span class="money">$<?php echo number_format($value['price_wholesale'],2);?></span>
+                                                        <span class="money">$<?php echo number_format($value['price_retail'],2);?></span>
                                                         <span class="product-price-old">
                                                             <span class="money">$<?php echo number_format($value['price_tag'],2);?></span>
                                                         </span>
@@ -671,7 +673,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                 <input type="hidden" id="prd_id" value="0">
                                 <span class="money">$<span id="price_tag">00.00</span></span>
                                 <span class="product-price-old">
-                                    <span class="money">$<span id="price_wholesale">00.00</span></span>
+                                    <span class="money">$<span id="price_retail">00.00</span></span>
                                 </span>
                             </span>
                             <p class="product-short-description mb--25 mb-md--20" id="prd_descr" style="word-break: break-all;">&nbsp;</p>
@@ -887,7 +889,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#cate_name").html(decodeURIComponent(shop_items[id].cate_name));
         $("#brand_name").html(decodeURIComponent(shop_items[id].brand_name));
         $("#prd_descr").html(decodeURIComponent(shop_items[id].prd_descr));
-        $("#price_wholesale").html(currencyFormat(parseFloat(shop_items[id].price_wholesale)));
+        $("#price_retail").html(currencyFormat(parseFloat(shop_items[id].price_retail)));
         $("#price_tag").html(currencyFormat(parseFloat(shop_items[id].price_tag)));
         $("#prd_name").html(decodeURIComponent(shop_items[id].prd_name));
         //var status = ['new','hot','sale','Unknown']
@@ -899,7 +901,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
         $("#cate_name").html("");
         $("#brand_name").html("");
         $("#prd_descr").html("");
-        $("#price_wholesale").html("");
+        $("#price_retail").html("");
         $("#price_tag").html("");
         $("#prd_name").html("");
         $("#status").removeClass("new sale hot"); $("#status").html("");
@@ -925,7 +927,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
             $("#rows_count").html(rows_count); $("#pagestart_count").html(pagestart_count); $("#pageend_count").html(pageend_count);
 
             setTimeout(function(){
-                //fullaction();
+                fullaction();
             },1000);
 
         });
@@ -933,14 +935,13 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
     
 </body>
     <script src="cart.js"></script>
+    <script src="info.js"></script>
 <?php
 $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     if($uriSegments[1]!='lala') {
 ?>
-    <!--
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="liff-starter.js"></script>
-    -->
 <?php
 }
 mysqli_close($conn);

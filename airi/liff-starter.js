@@ -42,7 +42,7 @@ function initializeApp(data) {
             window.alert("Error sending message: " + error);
         });
     });
- 
+
     // get access token
     document.getElementById('getaccesstoken').addEventListener('click', function () {
 		const accessToken = liff.getAccessToken();
@@ -140,11 +140,7 @@ function fullaction() {
 
 	        liff.sendMessages([{
 	            type: 'text',
-	            text: "ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
-	        }, {
-	            type: 'sticker',
-	            packageId: '2',
-	            stickerId: '144'
+	            text: "สวัสดีค่ะ วันนี้ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
 	        }]).then(function () {
 	            //window.alert("Message sent");
 	        }).catch(function (error) {
@@ -155,4 +151,19 @@ function fullaction() {
 	   },1000);
 	}
 
+}
+
+function setMsg(msg) {
+        liff.sendMessages([{
+            type: 'text',
+            text: msg
+        }, {
+            type: 'sticker',
+            packageId: '2',
+            stickerId: '144'
+        }]).then(function () {
+            //window.alert("Message sent");
+        }).catch(function (error) {
+            window.alert("Error sending message: " + error);
+        });	
 }

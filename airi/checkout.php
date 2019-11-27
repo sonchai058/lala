@@ -56,7 +56,6 @@
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-
       var cus_id = "";
       var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
@@ -80,24 +79,132 @@
         <div id="content" class="main-content-wrapper">
             <div class="page-content-inner">
                 <div class="container">
-                    <div class="row pt--80 pb--80 pt-md--45 pt-sm--25 pb-md--60 pb-sm--40">
-                        <div class="col-lg-8 mb-md--30">
-                            <form class="cart-form" action="#">
-                                <div class="row no-gutters">
-                                    <div class="col-12">
-                                        <div class="table-content table-responsive">
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th>&nbsp;</th>
-                                                        <th>&nbsp;</th>
-                                                        <th class="text-left" style="font-size:15px">สินค้า</th></th>
-                                                        <th style="font-size:15px">ราคา</th>
-                                                        <th style="font-size:15px">จำนวน</th>
-                                                        <th style="font-size:15px">รวม</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                     <form action="#" class="form form--checkout" name="profile" id="profile" method="post">
+                    <br/>
+                    <div class="row pb--80 pb-md--60 pb-sm--40">
+                        <!-- Checkout Area Start -->  
+                        <div class="col-lg-6">
+                            <div class="checkout-title mt--10">
+                                <h2>รายละเอียดการสั่งซื้อ</h2>
+                            </div>
+                            <div class="checkout-form">
+                                    <input type="hidden" name="useridprofilefield">
+                                    <div id="load" style="display: none;position:absolute; right:0; top:0">กำลังเชื่อมโยงกับไลน์...</div> 
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-md-6 mb-sm--30">
+                                            <label for="cus_fname" class="form__label form__label--2">ชื่อ  <span class="required">*</span></label>
+                                            <input type="text" name="cus_fname" id="cus_fname" class="form__input form__input--2">
+                                        </div>
+                                        <div class="form__group col-md-6">
+                                            <label for="cus_lname" class="form__label form__label--2">นามสกุล  <span class="required">*</span></label>
+                                            <input type="text" name="cus_lname" id="cus_lname" class="form__input form__input--2">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-6">
+                                            <label for="mobile_no" class="form__label form__label--2">มือถือ</label>
+                                            <input type="text" name="mobile_no" id="mobile_no" class="form__input form__input--2">
+                                        </div>
+                                        <div class="form__group col-6">
+                                            <label class="form__label form__label--2" for="bt_search_mobile">&nbsp;</label>
+                                            <a href="javascript:void(0)" class="btn btn-style-1 btn-submit" id="bt_search_mobile" style="margin-top: 0px;margin-left: -10px;color:#fff;/* width: 15px !important; */padding: 17px;"><i class="dl-icon-search10">&nbsp;ค้นจากเบอร์&nbsp;&nbsp;</i></a>
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="email_addr" class="form__label form__label--2">อีเมล</label>
+                                            <input type="email" name="email_addr" id="email_addr" class="form__input form__input--2">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="iso_code" class="form__label form__label--2">ISO Code</label>
+                                            <div style="float:left;">  
+                                                <input checked type="radio" value="TH" name="iso_code" id="" class="form__input"> TH &nbsp;&nbsp;
+                                            </div>
+                                            <div style="float:left">
+                                                <input type="radio" value="EN" name="iso_code" id="" class="form__input"> EN &nbsp;&nbsp;
+                                            </div>
+                                            <div style="float:left">
+                                            <input type="radio" value="CH" name="iso_code" id=""     class="form__input"> CH &nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                            <fieldset class="form__fieldset mb--20">
+                                                <legend class="form__legend">(ที่อยู่สำหรับจัดส่งสินค้า)</legend>
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="cur_pass">ที่อยู่</label>
+                                                            <textarea name="addr_line1" id="addr_line1" class="" rows="7" style="width:100%"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="addr_prov">จังหวัด <span class="required">*</span></label>
+                                                            <select type="text" name="addr_prov" id="addr_prov" class="form__input">
+                                                                <option value="">เลือกจังหวัด</option>
+                                                            <?php
+                                                            $rows = mysqli_query($conn,"select * from sys_area where area_type='Province' AND iso_code='TH'");
+                                                                while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)){
+                                                            ?>
+                                                                <option value="<?php echo $value['area_code'];?>"><?php echo $value['area_name'];?></option>
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="addr_city">อำเภอ <span class="required">*</span></label>
+                                                            <select type="text" name="addr_city" id="addr_city" class="form__input">
+                                                                <option>เลือกอำเภอ</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="addr_suburb">ตำบล <span class="required">*</span></label>
+                                                            <select type="text" name="addr_suburb" id="addr_suburb" class="form__input">
+                                                                <option>เลือกตำบล</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="row mb--20">
+                                                <div class="col-12">
+                                                    <div class="form__group">
+                                                        <label class="form__label" for="addr_zipcode">รหัสไปรณีย์ <span class="required">*</span></label>
+                                                        <input type="text" name="addr_zipcode" id="addr_zipcode" class="form__input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            </fieldset>
+                                    <a href="shop-sidebar.php"><b><< กลับไปเลือกสินค้า</b></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
+                            <div class="order-details">
+                                <div class="checkout-title mt--10">
+                                    <h2>รายการของท่าน</h2>
+                                </div>
+                                <div class="table-content table-responsive mb--30">
+                                    <table class="table order-table order-table-2">
+                                        <thead>
+                                            <tr>
+                                                <th>สินค้า</th>
+                                                <th class="text-right">ราคา</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
 <?php
 $sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Yes";
                                     foreach ($_SESSION['items'] as $key => $value) {
@@ -106,33 +213,13 @@ $sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Ye
                                       if($value['ship_fee_status']=='No') {
                                         $ship_fee_status = "No";
                                       }
-?>                                                    
-                                                    <tr>
-                                                        <td class="product-remove text-left"><a href="javascript:void(0)" onclick="del('<?php echo $value['prd_id'];?>')"><i class="dl-icon-close"></i></a></td>
-                                                        <td class="product-thumbnail text-left">
-                                                            <img onerror="noimage(this)" width="70px" height="81px" src="../../files/product-o/<?php echo $value['PrdPhoto'];?>" alt="Product Thumnail">
-                                                        </td>
-                                                        <td class="product-name text-left wide-column">
-                                                            <h3>
-                                                                <a href="product-details.html"><?php echo urldecode($value['detail']);?></a>
-                                                            </h3>
-                                                        </td>
-                                                        <td class="product-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money">$<?php echo number_format($value['price_tag'],2);?></span>
-                                                            </span>
-                                                        </td>
-                                                        <td class="product-quantity">
-                                                            <div class="quantity">
-                                                                <input type="number" class="quantity-input" name="qty" id="quatity<?php echo $key;?>" data-id="<?php echo $value['prd_id'];?>" data-key="<?php echo $key;?>" value="<?php echo $value['quatity'];?>" min="1">
-                                                            </div>
-                                                        </td>
-                                                        <td class="product-total-price">
-                                                            <span class="product-price-wrapper">
-                                                                <span class="money"><strong>$<?php echo number_format($value['price'],2);?></strong></span>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
+?> 
+                                            <tr>
+                                                <th><?php echo urldecode($value['detail']);?> 
+                                                    <strong><span>&#10005;</span><?php echo $value['quatity'];?></strong>
+                                                </th>
+                                                <td class="text-right">$<?php echo number_format($value['price'],2);?></td>
+                                            </tr>
 <?php
 }  if(count($_SESSION['items'])<1) { ?>
                                       <tr>
@@ -159,174 +246,63 @@ $total = $total <0?0:$total;
 
 $sub_total = $sub_total <0?0:$sub_total;
 $ship_fee = $ship_fee <0?0:$ship_fee;
+$vat_amt = $vat_amt <0?0:$vat_amt;
 $grand_total = $grand_total <0?0:$grand_total;
 ?>
-                                                </tbody>
-                                            </table>
-                                            <br/>
-                                            <a href="shop-sidebar.php"><b><< กลับไปเลือกสินค้า</b></a>
-                                        </div>  
-                                    </div>
+
+
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="cart-subtotal">
+                                                <th>ราคา
+                                                    <input type="hidden" name="ship_fee_status" id="ship_fee_status" value="<?php echo $ship_fee_status;?>">
+                                                    <input type="hidden" name="cus_id" id="cus_id">
+                                                    <input type="hidden" name="vat_amt" id="vat_amt" value="<?php echo $vat_amt;?>">
+                                                    <input type="hidden" name="sub_total_vat" id="sub_total_vat" value="<?php echo $sub_total_vat;?>">
+                                                    <input type="hidden" name="sub_total" id="sub_total" value="<?php echo $sub_total;?>">
+                                                </th>
+                                                <td class="text-right">$<?php echo number_format($sub_total,2)?></td>
+                                            </tr>
+                                            <tr class="shipping">
+                                                <th>ค่าจัดส่ง<input type="hidden" name="ship_fee" id="ship_fee" value="<?php echo $ship_fee;?>"></th>
+                                                <td class="text-right">
+                                                    $<?php echo number_format($ship_fee,2);?>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <th>รวม<input type="hidden" name="grand_total" id="grand_total" value="<?php echo $grand_total;?>"></th>
+                                                <td class="text-right"><span class="order-total-ammount">$<?php echo number_format($grand_total,2)?></span></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
-                                <!--
-                                <div class="row no-gutters border-top pt--20 mt--20">
-                                    <div class="col-sm-6">
-                                        <div class="coupon">
-                                            <input type="text" id="coupon" name="coupon" class="cart-form__input" placeholder="Coupon Code">
-                                            <button type="submit" class="cart-form__btn">Apply Coupon</button>
+                                <div class="checkout-payment">
+                                        <div class="payment-group mb--10">
+                                            <div class="payment-radio">
+                                                <input type="radio" class="ship_type" value="Immediately" name="ship_type" checked>
+                                                <label class="payment-label" for="cheque">จัดส่งทันที</label>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-6 text-sm-right">
-                                        <button type="submit" class="cart-form__btn">Clear Cart</button>
-                                        <button type="submit" class="cart-form__btn">Update Cart</button>
-                                    </div>
+                                        <div class="payment-group mb--10">
+                                            <div class="payment-radio">
+                                                <input type="radio" class="ship_type" value="Not Now    " name="ship_type">
+                                                <label class="payment-label" for="cheque">
+                                                    รอจัดส่ง
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-group mt--20">
+                                            <input type="button" id="bt_checkout" value="สั่งซื้อ" class="btn btn-fullwidth btn-style-1 btn-submit">
+                                        </div>
                                 </div>
-                                -->
-                            </form>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="cart-collaterals">
-                                <div class="cart-totals">
-                                    <h5 class="mb--15">ราคาในตะกร้า</h5>
-                                    <div class="table-content table-responsive">
-                                        <table class="table order-table">
-                                            <tbody>
-                                                <tr>
-                                                    <th>ราคา</th>
-                                                    <td>$<?php echo number_format($sub_total,2);?></td>  
-                                                </tr>
-                                                <tr>
-                                                    <th>ค่าจัดส่ง</th>
-                                                    <td>$<?php echo number_format($ship_fee,2);?></td>  
-                                                </tr>
-                                                <!--
-                                                <tr>
-                                                    <th>จัดส่ง</th>
-                                                    <td>
-                                                        <span>Flat rate: $20.00</span>
-                                                        <div class="shipping-calculator-wrap">
-                                                            <a href="#shipping_calculator" class="expand-btn">Calculate Shipping</a>
-                                                            <form id="shipping_calculator" class="form shipping-calculator-form hide-in-default">
-                                                                <div class="form__group mb--10">
-                                                                    <select id="calc_shipping_country" name="calc_shipping_country" class="nice-select">
-                                                                        <option value="">Select a country…</option>
-                                                                        <option value="AF">Afghanistan</option>
-                                                                        <option value="AL">Albania</option>
-                                                                        <option value="DZ">Algeria</option>
-                                                                        <option value="AR">Argentina</option>
-                                                                        <option value="AM">Armenia</option>
-                                                                        <option value="AU">Australia</option>
-                                                                        <option value="AT">Austria</option>
-                                                                        <option value="AZ">Azerbaijan</option>
-                                                                        <option value="BH">Bahrain</option>
-                                                                        <option value="BD" selected="selected">Bangladesh</option>
-                                                                        <option value="BD">Brazil</option>
-                                                                        <option value="CN">China</option>
-                                                                        <option value="EG">Egypt</option>
-                                                                        <option value="FR">France</option>
-                                                                        <option value="DE">Germany</option>
-                                                                        <option value="HK">Hong Kong</option>
-                                                                        <option value="HU">Hungary</option>
-                                                                        <option value="IS">Iceland</option>
-                                                                        <option value="IN">India</option>
-                                                                        <option value="ID">Indonesia</option>
-                                                                        <option value="IR">Iran</option>
-                                                                        <option value="IQ">Iraq</option>
-                                                                        <option value="IE">Ireland</option>
-                                                                        <option value="IT">Italy</option>
-                                                                        <option value="JP">Japan</option>
-                                                                        <option value="KW">Kuwait</option>
-                                                                        <option value="MY">Malaysia</option>
-                                                                        <option value="MV">Maldives</option>
-                                                                        <option value="MX">Mexico</option>
-                                                                        <option value="MC">Monaco</option>
-                                                                        <option value="NP">Nepal</option>
-                                                                        <option value="RU">Russia</option>
-                                                                        <option value="KR">South Korea</option>
-                                                                        <option value="SS">South Sudan</option>
-                                                                        <option value="ES">Spain</option>
-                                                                        <option value="LK">Sri Lanka</option>
-                                                                        <option value="SD">Sudan</option>
-                                                                        <option value="SZ">Swaziland</option>
-                                                                        <option value="SE">Sweden</option>
-                                                                        <option value="CH">Switzerland</option>
-                                                                        <option value="TN">Tunisia</option>
-                                                                        <option value="TR">Turkey</option>
-                                                                        <option value="UA">Ukraine</option>
-                                                                        <option value="AE">United Arab Emirates</option>
-                                                                        <option value="GB">United Kingdom (UK)</option>
-                                                                        <option value="US">United States (US)</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form__group mb--10">
-                                                                    <select id="calc_shipping_district" name="calc_shipping_district" class="nice-select">
-                                                                        <option value="">Select a District…</option>
-                                                                        <option>BARISAL</option>
-                                                                        <option>BHOLA</option>
-                                                                        <option>BANDARBAN</option>
-                                                                        <option>BRAHMANBARIA</option>
-                                                                        <option>CHANDPUR</option>
-                                                                        <option>CHITTAGONG</option>
-                                                                        <option>COMILLA</option>
-                                                                        <option>COX'S BAZAR</option>
-                                                                        <option>DHAKA</option>
-                                                                        <option>FARIDPUR</option>
-                                                                        <option>FENI</option>
-                                                                        <option>GAZIPUR</option>
-                                                                        <option>GOPALGANJ</option>
-                                                                        <option>JAMALPUR</option>
-                                                                        <option>KHAGRACHHARI</option>
-                                                                        <option>KISHOREGONJ</option>
-                                                                        <option>LAKSHMIPU</option>
-                                                                        <option>RMADARIPUR</option>
-                                                                        <option>MUNSHIGANJ</option>
-                                                                        <option>MYMENSINGH</option>
-                                                                        <option>NARAYANGANJ</option>
-                                                                        <option>NARSINGDI</option>
-                                                                        <option>NETRAKONA</option>
-                                                                        <option>NOAKHALI</option>
-                                                                        <option>RANGAMATI </option>
-                                                                        <option>RAJBARI</option>
-                                                                        <option>SHARIATPUR</option>
-                                                                        <option>SHERPUR</option>
-                                                                        <option>TANGAIL</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <div class="form__group mb--10">
-                                                                    <input type="text" name="calc_shipping_city" id="calc_shipping_city" placeholder="Town / City">
-                                                                </div>
-
-                                                                <div class="form__group mb--10">
-                                                                    <input type="text" name="calc_shipping_zip" id="calc_shipping_zip" placeholder="Postcode / Zip">
-                                                                </div>
-
-                                                                <div class="form__group">
-                                                                    <input type="submit" value="Update Totals">
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </td>  
-                                                </tr>
-                                                -->
-                                                <tr class="order-total">
-                                                    <th>รวม</th>
-                                                    <td>
-                                                        <span class="product-price-wrapper">
-                                                            <span class="money">$<?php echo number_format($grand_total,2);?></span>
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <a href="checkout.php" class="btn btn-fullwidth btn-style-1">
-                                    ดำเนินการขั้นตอนต่อไป
-                                </a>
                             </div>
                         </div>
+                        <!-- Checkout Area End -->
+                        </form>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -338,10 +314,10 @@ $grand_total = $grand_total <0?0:$grand_total;
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="page-title">Cart</h1>
+                        <h1 class="page-title">Checkout</h1>
                         <ul class="breadcrumb justify-content-center">
                             <li><a href="index.html">Home</a></li>
-                            <li class="current"><span>Cart</span></li>
+                            <li class="current"><span>Checkout</span></li>
                         </ul>
                     </div>
                 </div>
@@ -689,34 +665,117 @@ $grand_total = $grand_total <0?0:$grand_total;
     
 </body>
     <script>
-    <?php
-      echo 'var cus_id="";'; 
-    ?>       
         $(document).ready(function(){
-            $(".quantity .qtybutton.dec").click(function(){
-                //console.log($(this).prev().val());
-                del2Cart($(this).prev().data('id'));
+            setTimeout(function(){
+                fullaction();
+            },1000);
+
+            $("#bt_checkout").click(function(){
+                $("#cus_id").val(cus_id);
+                $("input[name='useridprofilefield']").val(useridprofilefield);
+                console.log($("#profile").serialize());
+
+               if($("input[name='useridprofilefield']").val()=='' || $("#cus_id").val()=='') {
+                alert("เชื่อมโยงกับไลน์ล้มเหลว!");
+               }else if($("#cus_fname").val()==''){
+                alert("กรุณากรอกชื่อ!");
+                $("#cus_fname").focus();
+               }else if($("#mobile_no").val()==''){
+                alert("กรุณาเบอร์ติดต่อ!");
+                $("#mobile_no").focus();
+               }else if($("#addr_prov").val()==''){
+                alert("กรุณาเลือกจังหวัด!");
+                $("#addr_prov").focus();
+               }else if($("#addr_city").val()==''){
+                alert("กรุณาเลือกอำเภอ!");
+                $("#addr_city").focus();
+               }else if($("#addr_suburb").val()==''){
+                alert("กรุณาเลือกตำบล!");
+                $("#addr_suburb").focus();
+               }else if($("#addr_zipcode").val()==''){
+                alert("กรุณากรอกรหัสไปรษณีย์!");
+                $("#addr_zipcode").focus();
+               }else {
+                  $("#load").html("กำลังบันทึกข้อมูล...");
+                  $("#bt_submit").attr('disabled',true);
+                  $.ajax({
+                    method: "POST",
+                    url: 'savemyacc.php',
+                    data: $("#profile").serialize(),
+                    success: function(data){
+                        console.log(data);
+                        if(data.staus=='ok') {
+                            //alert("บันทึกข้อมูลสำเร็จ...");
+                            //$("#load").html("บันทึกข้อมูลสำเร็จ...");
+                    
+                              $.ajax({
+                                method: "POST",
+                                url: 'checkout_process.php',
+                                data: $("#profile").serialize(),
+                                success: function(data){
+                                    console.log(data);
+                                    if(data.staus=='ok') {
+                                        msg = "ขอบคุณที่สั่งสินค้ากับเราค่ะ...";
+                                        alert("ขอบคุณที่สั่งสินค้ากับเราค่ะ...");
+                                        $("#load").html("สั่งสินค้าสำเร็จ...");
+                                        alert(JSON.stringify(data));
+                                        setMsg(msg+"\n"+"ติดตามการสั่งซื้อ\n"+"https://www.lalabeauty.co.th/bill/?ord_id="+data.data.reg_capch);
+
+                                        setTimeout(function(){
+                                            window.location.replace("https://www.lalabeauty.co.th/bill/?ord_id="+data.data.reg_capcha);
+                                        },1000);
+
+
+                                        if(url_back!='') {
+                                            window.location.replace('cart.php');
+                                        }
+                                    }else {
+                                        alert("สั่งสินค้าล้มเหลว...");
+                                        $("#load").html("บันทึกข้อมูลล้มเหลว...");
+                                    }
+                                    $("#bt_submit").attr('disabled',false);      
+                                },
+                                error: function(data){
+                                    console.log('สั่งสินค้าล้มเหลว!');
+                                    $("#bt_submit").attr('disabled',false);
+                                }
+                              });
+
+
+                            if(url_back!='') {
+                                window.location.replace(url_back);
+                            }
+
+                        }else {
+                            alert("บันทึกข้อมูลสมาชิกล้มเหลว...");
+                            $("#load").html("บันทึกข้อมูลล้มเหลว...");
+                        }
+                        $("#bt_submit").attr('disabled',false);      
+                    },
+                    error: function(data){
+                        console.log('บันทึกข้อมูลสมาชิกล้มเหลว!');
+                        $("#bt_submit").attr('disabled',false);
+                    }
+                  });
+               } 
+               
+              /*
+
+              */
             });
-            $(".quantity .qtybutton.inc").click(function(){
-                //console.log($(this).prev().prev().val());
-                add2Cart($(this).prev().prev().data('id'),1);
-            });
+
         });
-
-        //$(".inc.qtybutton").val();        
     </script>
-    <script src="cart.js"></script>
     <script src="info.js"></script>
-
+</body>
 <?php
 $uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
     if($uriSegments[1]!='lala') {
 ?>
-    
     <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="liff-starter.js"></script>
-    
 <?php
 }
+mysqli_close($conn);
 ?>
 </html>
