@@ -46,11 +46,11 @@
     <![endif]-->
     <script>
       var accesstokenfield = "";
-      var useridprofilefield = "";
+      var useridprofilefield = "<?php echo $_SESSION['useridprofilefield'];?>";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-      var cus_id = "";
+      var cus_id = "<?php echo $_SESSION['cus_id'];?>";
       var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
 </head>
@@ -76,7 +76,7 @@
                     <div class="row pt--80 pt-md--60 pt-sm--40 pb--80 pb-md--60 pb-sm--40">
                         <div class="col-12">
                             <div class="user-dashboard-tab flex-column flex-md-row">
-                                <div class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
+                                <div style="display:none" class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
                                     <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">โปรไฟล์ (ที่อยู่)</a>
                                     <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders">ออเดอร์ของฉัน</a>
                                 </div>
@@ -320,14 +320,14 @@
         
         <!-- Breadcrumb area Start -->
 
-        <div class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
+        <div style="background-color: #f5bcbc !important;" class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="page-title">My Account</h1>
+                        <h1 class="page-title">โปรไฟล์</h1>
                         <ul class="breadcrumb justify-content-center">
-                            <li><a href="index.html">Home</a></li>
-                            <li class="current"><span>My Account</span></li>
+                            <li><a href="/shop-sidebar.php">หน้าหลัก</a></li>
+                            <li class="current"><span>โปรไฟล์</span></li>
                         </ul>
                     </div>
                 </div>

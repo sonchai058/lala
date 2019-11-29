@@ -31,6 +31,10 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
   );
 }
 */
+  
+  $_SESSION['useridprofilefield'] = isset($_SESSION['useridprofilefield'])?$_SESSION['useridprofilefield']:'';
+  $_SESSION['cus_id'] = isset($_SESSION['cus_id'])?$_SESSION['cus_id']:'';
+  $_SESSION['date_alert_today'] = isset($_SESSION['date_alert_today'])?$_SESSION['date_alert_today']:'';
 
   $_SESSION['items'] = isset($_SESSION['items'])?$_SESSION['items']:array();
   $_SESSION['items'] = $_SESSION['items']==null?array():$_SESSION['items'];

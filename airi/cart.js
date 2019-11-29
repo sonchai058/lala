@@ -1,5 +1,6 @@
-        function add2Cart(keyitem,qty) {
+        function add2Cart(keyitem,qty,node) {
           console.log(keyitem);
+          $(node).attr('disabled',true);
           $.ajax({
                     method: "GET",
                     url: 'add2cart.php',
@@ -7,10 +8,12 @@
                     success: function(data){
                         console.log(data);
                         console.log('add 2 Cart Success!');
+                        //$(node).attr('disabled',false);
                         location.reload();
                     },
                     error: function(data){
                         console.log('add 2 Cart Failed!');
+                        $(node).attr('disabled',false);
                     }
           });
         }

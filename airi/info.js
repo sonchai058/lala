@@ -148,12 +148,15 @@
         });
 
        $("#bt_search_mobile").click(function(){
+            $(this).attr('disabled',true);
            $("#bt_search_mobile").attr('disabled',true);
            if($("#mobile_no").val()==''){
-            alert("กรุณาเบอร์ติดต่อ!");
+            alert("กรุณากรอกเบอร์ติดต่อ!");
             $("#mobile_no").focus();
+            $(this).attr('disabled',false);
            }else {
             getInfo('mobile_no');
+            $(this).attr('disabled',false);
            }
            $("#bt_search_mobile").attr('disabled',false);
         });
@@ -173,6 +176,9 @@
                         $("#email_addr").val(data.data.email_addr);
                         
                         cus_id = data.data.cus_id;
+                        if(url_back=='my-account_histro.php') {
+                            window.reload();
+                        }
 
                         //$("#iso_code").val(data.data.iso_code);
                         iso_code_change(data.data.iso_code,data.data.addr_prov);
@@ -193,9 +199,13 @@
                         //$("#addr_suburb").val(data.data.addr_suburb);
                         //alert(data.data.addr_suburb);
                         //alert($("#addr_zipcode").val()+"::"+data.data.addr_zipcode);
-                        setTimeout(function(){$("#addr_zipcode").val(data.data.addr_zipcode);},2500);
-                        //addr_suburb_change(data.data.addr_suburb);
+                        setTimeout(function(){$("#addr_zipcode").val(data.data.addr_zipcode);},2700);
+                        addr_suburb_change(data.data.addr_suburb);
                         //alert(data.data.addr_zipcode);
+
+                        if(type=='line_id' && data.alert==1) {
+                            setMsg("สวัสดีค่ะ วันนี้ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!");
+                        }
                         
                     }else {
                         if(type=='mobile_no') {

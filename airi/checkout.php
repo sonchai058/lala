@@ -52,11 +52,11 @@
         return true;
       }
       var accesstokenfield = "";
-      var useridprofilefield = "";
+      var useridprofilefield = "<?php echo $_SESSION['useridprofilefield'];?>";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-      var cus_id = "";
+      var cus_id = "<?php echo $_SESSION['cus_id'];?>";
       var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
 </head>
@@ -206,7 +206,7 @@
                                         </thead>
                                         <tbody>
 <?php
-$sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Yes";
+$sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Yes"; $i=1;
                                     foreach ($_SESSION['items'] as $key => $value) {
                                       $sub_total=$sub_total+$value['price'];
                                       
@@ -215,12 +215,13 @@ $sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Ye
                                       }
 ?> 
                                             <tr>
-                                                <th><?php echo urldecode($value['detail']);?> 
+                                                <th><?php echo $i.'. '.urldecode($value['detail']);?> 
                                                     <strong><span>&#10005;</span><?php echo $value['quatity'];?></strong>
                                                 </th>
                                                 <td class="text-right">$<?php echo number_format($value['price'],2);?></td>
                                             </tr>
 <?php
+                                            $i++;
 }  if(count($_SESSION['items'])<1) { ?>
                                       <tr>
                                         <td colspan="5">ไม่มีรายการ..</td>
@@ -310,14 +311,14 @@ $grand_total = $grand_total <0?0:$grand_total;
 
         <!-- Breadcrumb area Start -->
 
-        <div class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
+        <div style="background-color: #f5bcbc !important;" class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="page-title">Checkout</h1>
+                        <h1 class="page-title">สั่งซื้อ</h1>
                         <ul class="breadcrumb justify-content-center">
-                            <li><a href="index.html">Home</a></li>
-                            <li class="current"><span>Checkout</span></li>
+                            <li><a href="/shop-sidebar.php">หน้าหลัก</a></li>
+                            <li class="current"><span>สั่งซื้อ</span></li>
                         </ul>
                     </div>
                 </div>
@@ -698,6 +699,7 @@ $grand_total = $grand_total <0?0:$grand_total;
                }else {
                   $("#load").html("กำลังบันทึกข้อมูล...");
                   $("#bt_submit").attr('disabled',true);
+                  $(this).attr('disabled',true);
                   $.ajax({
                     method: "POST",
                     url: 'savemyacc.php',
@@ -733,11 +735,13 @@ $grand_total = $grand_total <0?0:$grand_total;
                                         alert("สั่งสินค้าล้มเหลว...");
                                         $("#load").html("บันทึกข้อมูลล้มเหลว...");
                                     }
-                                    $("#bt_submit").attr('disabled',false);      
+                                    $("#bt_submit").attr('disabled',false); 
+                                    $(this).attr('disabled',false);     
                                 },
                                 error: function(data){
                                     console.log('สั่งสินค้าล้มเหลว!');
                                     $("#bt_submit").attr('disabled',false);
+                                    $(this).attr('disabled',false);  
                                 }
                               });
 
@@ -750,11 +754,13 @@ $grand_total = $grand_total <0?0:$grand_total;
                             alert("บันทึกข้อมูลสมาชิกล้มเหลว...");
                             $("#load").html("บันทึกข้อมูลล้มเหลว...");
                         }
-                        $("#bt_submit").attr('disabled',false);      
+                        $("#bt_submit").attr('disabled',false);  
+                        $(this).attr('disabled',false);      
                     },
                     error: function(data){
                         console.log('บันทึกข้อมูลสมาชิกล้มเหลว!');
                         $("#bt_submit").attr('disabled',false);
+                        $(this).attr('disabled',false);  
                     }
                   });
                } 

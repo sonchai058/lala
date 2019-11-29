@@ -20,19 +20,19 @@
  $arrCode = isset($Code['Code'])?$code_txt:'00000';
  $ord_code = $ord_code.getZero((intval($arrCode)+1), 5);
 
-$sql_root_query = "INSERT INTO cus_order SET bsn_id ='1',cus_id={$_POST['cus_id']},ord_code='{$ord_code}',date_of_order='".date('Y-m-d')."',usr_id='1',chn_id='4',ship_type='{$_POST['ship_type']}',sub_total='{$_POST['sub_total']}',ship_fee_status='{$_POST['ship_fee_status']}',ship_fee='{$_POST['ship_fee']}',discount_status='No',discount_type='',discount_val='0',discount_amt='0',sub_total_discount='0',vat_status='Yes',vat_type='Include VAT',vat_amt='{$_POST['vat_amt']}',sub_total_vat='{$_POST['sub_total_vat']}',wt_status='No',wt_percent='0',wt_amt='0',grand_total='{$_POST['grand_total']}',reg_capcha='{$reg_capcha}'";
+$sql_root_query = "INSERT INTO cus_order SET bsn_id ='1',cus_id={$_POST['cus_id']},ord_code='{$ord_code}',date_of_order='".date('Y-m-d H:i:s')."',usr_id='1',chn_id='4',ship_type='{$_POST['ship_type']}',sub_total='{$_POST['sub_total']}',ship_fee_status='{$_POST['ship_fee_status']}',ship_fee='{$_POST['ship_fee']}',discount_status='No',discount_type='',discount_val='0',discount_amt='0',sub_total_discount='0',vat_status='Yes',vat_type='Include VAT',vat_amt='{$_POST['vat_amt']}',sub_total_vat='{$_POST['sub_total_vat']}',wt_status='No',wt_percent='0',wt_amt='0',grand_total='{$_POST['grand_total']}',reg_capcha='{$reg_capcha}'";
  
- //mysqli_query($conn,$sql_root_query);
+ mysqli_query($conn,$sql_root_query);
  $ord_id = mysqli_insert_id($conn);
 
  foreach ($_SESSION['items'] as $key => $value) {
- 	$sql = "INSERT INTO cus_order_item SET prd_id='{$value['prd_id']}',ord_id='{$ord_id}',date_of_add='".date("Y-m-d")."',item_type='Order',item_qty='{$value['quatity']}',item_price='{$value['price']}'";
- 	//mysqli_query($conn,$sql);
+ 	$sql = "INSERT INTO cus_order_item SET prd_id='{$value['prd_id']}',ord_id='{$ord_id}',date_of_add='".date("Y-m-d H:i:s")."',item_type='Order',item_qty='{$value['quatity']}',item_price='{$value['price']}'";
+ 	mysqli_query($conn,$sql);
  }
 
- $data = array('ord_id'=>$ord_id,'ord_code'=>$ord_code,'reg_capcha'=>$reg_capcha,'sql_root_query'=>$sql_root_query);
+ $data = array('ord_id'=>$ord_id,'ord_code'=>$ord_code,'reg_capcha'=>$reg_capcha);
 
- //unset($_SESSION['items']);
+ unset($_SESSION['items']);
  echo json_encode(array('staus'=>'ok','data'=>$data));
 
 function randString($length, $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')

@@ -1,9 +1,9 @@
 <?php
- include("./inc-items-data.php");
+     include("./inc-items-data.php");
 ?>
 
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="th">
 
 <head>
     <meta charset="utf-8">
@@ -45,16 +45,39 @@
     <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-</head>
     <script>
+      function noimage(image) {
+        image.onerror = "";
+        image.src = 'images/noimage.png';
+        return true;
+      }
       var accesstokenfield = "";
-      var useridprofilefield = "<?php echo @$_SESSION['useridprofilefield'];?>";
+      var useridprofilefield = "<?php echo $_SESSION['useridprofilefield'];?>";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-      var cus_id = "<?php echo @$_SESSION['cus_id'];?>";
+      var cus_id = "<?php echo $_GET['cus_id'];?>";
       var url_back = "my-account_histro.php";
+
+      var ord_id = <?php echo @$_GET['ord_id'];?>
     </script>
+    <style>
+        input,select,textarea {
+            border-top: 0 !important;
+            border-left: 0 !important;
+            border-right: 0 !important;    
+        }    
+    </style>
+</head>
+
+<?php
+    $query = mysqli_query($conn,"select * from cus_info where del_status='No' AND cus_id='".$_GET['cus_id']."'"); 
+    $value = @mysqli_fetch_array($query,MYSQLI_ASSOC);
+
+    $query = mysqli_query($conn,"select * from cus_order where del_status='No' AND ord_id='".$_GET['ord_id']."'"); 
+    $value00 = @mysqli_fetch_array($query,MYSQLI_ASSOC);
+?>
+
 <body>
 
 
@@ -73,226 +96,259 @@
         <div id="content" class="main-content-wrapper">
             <div class="page-content-inner">
                 <div class="container">
-                    <div class="row pt--80 pt-md--60 pt-sm--40 pb--80 pb-md--60 pb-sm--40">
-                        <div class="col-12">
-                            <div class="user-dashboard-tab flex-column flex-md-row">
-                                <div style="display:none" class="user-dashboard-tab__head nav flex-md-column" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#accountdetails" aria-controls="accountdetails" aria-selected="true">โปรไฟล์ (ที่อยู่)</a>
-                                    <a class="nav-link" data-toggle="pill" role="tab" href="#orders" aria-controls="orders">ออเดอร์ของฉัน</a>
-                                </div>
-                                <div class="user-dashboard-tab__content tab-content">
-                                    <div class="tab-pane fade show active" id="dashboard">
-                                        <p>Hello <strong>John</strong> (not <strong>John</strong>? <a href="login.html">Log out</a>)</p>
-                                        <p>From your account dashboard. you can easily check &amp; view your <a href="">recent orders</a>, manage your <a href="">shipping and billing addresses</a> and <a href="">edit your password and account details</a>.</p>
-                                    </div>
-                                    <div class="tab-pane fade" id="orders">
-                                        <div class="message-box mb--30 d-none">
-                                            <p><i class="fa fa-check-circle"></i>No order has been made yet.</p>
-                                            <a href="shop-sidebar.html">Go Shop</a>
+                     <form action="#" class="form form--checkout" name="profile" id="profile" method="post">
+                    <br/>
+                    <div class="row pb--80 pb-md--60 pb-sm--40">
+                        <!-- Checkout Area Start -->  
+                        <div class="col-lg-6">
+                            <div class="checkout-title mt--10">
+                                <h2>รายละเอียดการสั่งซื้อ</h2>
+                            </div>
+                            <div class="checkout-form">
+                                    <input type="hidden" name="useridprofilefield">
+                                    <div id="load" style="display: none;position:absolute; right:0; top:0">กำลังเชื่อมโยงกับไลน์...</div> 
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-md-6 mb-sm--30">
+                                            <label for="cus_fname" class="form__label form__label--2">ชื่อ  <span class="required">*</span></label>
+                                            <input readonly="true" type="text" name="cus_fname" id="cus_fname" class="form__input form__input--2" value="<?php echo @$value['cus_fname'];?>">
                                         </div>
-                                        <div class="table-content table-responsive">
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="font-size: 14px;">รายการ</th>
-                                                        <th style="font-size: 14px;">วันที่</th>
-                                                        <th style="font-size: 14px;">สถานะ</th>
-                                                        <th style="font-size: 14px;">จำนวน</th>
-                                                        <th style="font-size: 14px;">การกระทำ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+                                        <div class="form__group col-md-6">
+                                            <label for="cus_lname" class="form__label form__label--2">นามสกุล  <span class="required">*</span></label>
+                                            <input readonly="true" type="text" name="cus_lname" id="cus_lname" class="form__input form__input--2" value="<?php echo @$value['cus_lname'];?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-6">
+                                            <label for="mobile_no" class="form__label form__label--2">มือถือ</label>
+                                            <input readonly="true" type="text" name="mobile_no" id="mobile_no" class="form__input form__input--2" value="<?php echo @$value['mobile_no'];?>">
+                                        </div>
+                                        <!--
+                                        <div class="form__group col-6">
+                                            <label class="form__label form__label--2" for="bt_search_mobile">&nbsp;</label>
+                                            <a href="javascript:void(0)" class="btn btn-style-1 btn-submit" id="bt_search_mobile" style="margin-top: 0px;margin-left: -10px;color:#fff;/* width: 15px !important; */padding: 17px;"><i class="dl-icon-search10">&nbsp;ค้นจากเบอร์&nbsp;&nbsp;</i></a>
+                                        </div>
+                                        -->
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="email_addr" class="form__label form__label--2">อีเมล</label>
+                                            <input readonly="true" type="email" name="email_addr" id="email_addr" class="form__input form__input--2" value="<?php echo @$value['email_addr'];?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-row mb--30">
+                                        <div class="form__group col-12">
+                                            <label for="iso_code" class="form__label form__label--2">ISO Code</label>
+                                            <div style="float:left;">  
+                                                <input disabled="true" <?php if($value['iso_code']=='TH'){echo 'checked';}?> type="radio" value="TH" name="iso_code" id="" class="form__input"> TH &nbsp;&nbsp;
+                                            </div>
+                                            <div style="float:left">
+                                                <input disabled="true" <?php if($value['iso_code']=='EN'){echo 'checked';}?> type="radio" value="EN" name="iso_code" id="" class="form__input"> EN &nbsp;&nbsp;
+                                            </div>
+                                            <div style="float:left">
+                                            <input disabled="true" <?php if($value['iso_code']=='CH'){echo 'checked';}?> type="radio" value="CH" name="iso_code" id=""     class="form__input"> CH &nbsp;&nbsp;
+                                            </div>
+                                        </div>
+                                    </div>
 
-<?php  
- if($_SESSION['cus_id']=='') {
-?>
-                                                    <tr>
-                                                        <td colspan=4>ไม่มีรายการ..</td>
-                                                    </tr>
-<?php
-}else {
-    $sql = "select * from cus_order where del_status='No' AND cus_id='".$_SESSION['cus_id']."'";
-    $query = mysqli_query($conn,$sql);
-    if($query) {    
-        $i=1;
-        while($value = mysqli_fetch_array($query,MYSQLI_ASSOC)){
-?>
-                                                    <tr>
-                                                        <td><?php echo $i;?></td>
-                                                        <td class="wide-column">
-                                                            <?php 
-                                                            $date_of_order = $value['date_of_order'];
-                                                            echo substr($date_of_order,8,2).'/'.substr($date_of_order,5,2).'/'.(substr($date_of_order,0,4)+543).' '.substr($date_of_order,10,6).' น.';
-                                                            ?>
-                                                        </td>
-                                                        <?php
-                                                        $arr = array('Immediately'=>'จัดส่งทันที','Not Now');
-                                                        ?>
-                                                        <td><?php echo @$arr[$value['ship_type']];?></td>
-                                                        <td class="wide-column">$<?php echo $value['grand_total'];?></td>
-                                                        <td><a href="my-account_histro_list.php?ord_id=<?php echo $value['ord_id'];?>&cus_id=<?php echo $value['cus_id'];?>" class="btn btn-medium btn-style-1">แสดง</a></td>
-                                                    </tr>
-<?php
-            $i++;
-        }
-    }else {
-?>
-                                                    <tr>
-                                                        <td colspan=4>ไม่มีรายการ..</td>
-                                                    </tr>
-
-<?php
-    }
-}
-?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="downloads">
-                                        <div class="message-box mb--30 d-none">
-                                            <p><i class="fa fa-exclamation-circle"></i>No downloads available yet.</p>
-                                            <a href="shop-sidebar.html">Go Shop</a>
-                                        </div>
-                                        <div class="table-content table-responsive">
-                                            <table class="table text-center">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Product</th>
-                                                        <th>Downloads</th>
-                                                        <th>Expires</th>
-                                                        <th>Download</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="wide-column">Airi - Ecommerce Bootstrap Template</td>
-                                                        <td>August 10, 2018 </td>
-                                                        <td class="wide-column">Never</td>
-                                                        <td><a href="#" class="btn btn-medium btn-style-1">Download File</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="wide-column">Airi - Ecommerce Bootstrap Template</td>
-                                                        <td>August 10, 2018 </td>
-                                                        <td class="wide-column">Never</td>
-                                                        <td><a href="#" class="btn btn-medium btn-style-1">Download File</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="addresses">
-                                        <p class="mb--20">The following addresses will be used on the checkout page by default.</p>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-sm--20">
-                                                <div class="text-block">
-                                                    <h4 class="mb--20">Billing address</h4>
-                                                    <a href="">Edit</a>
-                                                    <p>You have not set up this type of address yet.</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="text-block">
-                                                    <h4 class="mb--20">Shopping address</h4>
-                                                    <a href="">Edit</a>
-                                                    <p>You have not set up this type of address yet.</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="accountdetails">
-                                        <form action="#" class="form form--account">
-                                            <div class="row grid-space-30 mb--20">
-                                                <div class="col-md-6 mb-sm--20">
-                                                    <div class="form__group">
-                                                        <label class="form__label" for="f_name">First name <span class="required">*</span></label>
-                                                        <input type="text" name="f_name" id="f_name" class="form__input">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form__group">
-                                                        <label class="form__label" for="l_name">Last name <span class="required">*</span></label>
-                                                        <input type="text" name="l_name" id="l_name" class="form__input">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb--20">
-                                                <div class="col-12">
-                                                    <div class="form__group">
-                                                        <label class="form__label" for="d_name">Display name <span class="required">*</span></label>
-                                                        <input type="text" name="d_name" id="d_name" class="form__input">
-                                                        <span class="suggestion"><em>This will be how your name will be displayed in the account section and in reviews</em></span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row mb--20">
-                                                <div class="col-12">
-                                                    <div class="form__group">
-                                                        <label class="form__label" for="email">Email Address <span class="required">*</span></label>
-                                                        <input type="email" name="email" id="email" class="form__input">
-                                                    </div>
-                                                </div>
-                                            </div>
                                             <fieldset class="form__fieldset mb--20">
-                                                <legend class="form__legend">Password change</legend>
+                                                <legend class="form__legend">(ที่อยู่สำหรับจัดส่งสินค้า)</legend>
                                                 <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="cur_pass">Current password (leave blank to leave unchanged)</label>
-                                                            <input type="password" name="cur_pass" id="cur_pass" class="form__input">
+                                                            <label class="form__label" for="cur_pass">ที่อยู่</label>
+                                                            <textarea readonly="true" name="addr_line1" id="addr_line1" class="" rows="7" style="width:100%"><?php echo $value['addr_line1'];?></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="new_pass">New password (leave blank to leave unchanged)</label>
-                                                            <input type="password" name="new_pass" id="new_pass" class="form__input">
+                                                            <label class="form__label" for="addr_prov">จังหวัด <span class="required">*</span></label>
+                                                            <select disabled="true" type="text" name="addr_prov" id="addr_prov" class="form__input">
+                                                                <option value="">เลือกจังหวัด</option>
+                                                            <?php
+                                                            $rows = mysqli_query($conn,"select * from sys_area where area_type='Province' AND iso_code='".$value['iso_code']."' AND area_code='".$value['addr_prov']."'");
+                                                                while($value1=mysqli_fetch_array($rows,MYSQLI_ASSOC)){
+                                                            ?>
+                                                                <option selected value="<?php echo $value1['area_code'];?>"><?php echo $value1['area_name'];?></option>
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row mb--20">
                                                     <div class="col-12">
                                                         <div class="form__group">
-                                                            <label class="form__label" for="conf_new_pass">Confirm new password</label>
-                                                            <input type="password" name="conf_new_pass" id="conf_new_pass" class="form__input">
+                                                            <label class="form__label" for="addr_city">อำเภอ <span class="required">*</span></label>
+                                                            <select disabled="true" type="text" name="addr_city" id="addr_city" class="form__input">
+                                                                <option>เลือกอำเภอ</option>
+                                                            <?php
+                                                            $rows = mysqli_query($conn,"select * from sys_area where area_type='City' AND iso_code='".$value['iso_code']."' AND area_code='".$value['addr_city']."'");
+                                                                while($value1=mysqli_fetch_array($rows,MYSQLI_ASSOC)){
+                                                            ?>
+                                                                <option selected value="<?php echo $value1['area_code'];?>"><?php echo $value1['area_name'];?></option>
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </fieldset>
-                                            <div class="row">
+                                                <div class="row mb--20">
+                                                    <div class="col-12">
+                                                        <div class="form__group">
+                                                            <label class="form__label" for="addr_suburb">ตำบล <span class="required">*</span></label>
+                                                            <select disabled="true" type="text" name="addr_suburb" id="addr_suburb" class="form__input">
+                                                                <option>เลือกตำบล</option>
+                                                            <?php
+                                                            $rows = mysqli_query($conn,"select * from sys_area where area_type='Suburb' AND iso_code='".$value['iso_code']."' AND area_code='".$value['addr_suburb']."'");
+                                                                while($value1=mysqli_fetch_array($rows,MYSQLI_ASSOC)){
+                                                            ?>
+                                                                <option selected value="<?php echo $value1['area_code'];?>"><?php echo $value1['area_name'];?></option>
+                                                            <?php 
+                                                            }
+                                                            ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <div class="row mb--20">
                                                 <div class="col-12">
                                                     <div class="form__group">
-                                                        <input type="submit" value="Save Changes" class="btn btn-style-1 btn-submit">
+                                                        <label class="form__label" for="addr_zipcode">รหัสไปรณีย์ <span class="required">*</span></label>
+                                                        <input readonly="true" type="text" name="addr_zipcode" id="addr_zipcode" class="form__input" value="<?php echo $value['addr_zipcode'];?>">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                            </fieldset>
+                                    <a href="my-account_histro.php"><b><< กลับไปก่อนหน้า</b></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 offset-xl-1 col-lg-6 mt-md--40">
+                            <div class="order-details">
+                                <div class="checkout-title mt--10">
+                                    <h2>รายการของท่าน</h2>
+                                </div>
+                                <div class="table-content table-responsive mb--30">
+                                    <table class="table order-table order-table-2">
+                                        <thead>
+                                            <tr>
+                                                <th>สินค้า</th>
+                                                <th class="text-right">ราคา</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+<?php
+    $query = mysqli_query($conn,"select a.*,b.*,c.* from cus_order_item as a inner join sto_prd as b on b.prd_id=a.prd_id LEFT JOIN sto_unit as c ON b.unit_id=c.unit_id where b.del_status='No' AND a.ord_id='".$_GET['ord_id']."'"); 
+    $items = array();
+$sub_total = 0; $shipping = 0; $total = 0; $discount = 0; $ship_fee_status = "Yes"; $i=1;
+                                    while ($value = mysqli_fetch_array($query,MYSQLI_ASSOC)) {
+                                      $items[] = $value;
+                                      $sub_total=$sub_total+floatval($value['item_price']);
+                                      
+                                      if($value['ship_fee_status']=='No') {
+                                        $ship_fee_status = "No";
+                                      }
+?> 
+                                            <tr>
+                                                <th><?php echo $i.'. '.urldecode($value['prd_name']);?> 
+                                                    <strong><span>&#10005;</span><?php echo $value['item_qty'];?></strong>
+                                                </th>
+                                                <td class="text-right">$<?php echo number_format($value['item_price'],2);?></td>
+                                            </tr>
+<?php
+                                        $i++;
+}  if(count($items)<1) { ?>
+                                      <tr>
+                                        <td colspan="5">ไม่มีรายการ..</td>
+                                    </tr>
+<?php
+}
+if($ship_fee_status=='No') {
+   $ship_fee = 0;  
+}else {
+    $ship_fee = 50;
+}
+$ship_fee = count($items)!=0?$ship_fee:0;
+
+$discount = 0;
+
+$vat_amt = ($sub_total*7)/107;
+$sub_total_vat = $sub_total-$vat_amt;
+$grand_total = $sub_total + $ship_fee;
+/*
+$total= $shipping+$subtotal-$discount;
+$total = $total <0?0:$total;
+*/
+
+$sub_total = $sub_total <0?0:$sub_total;
+$ship_fee = $ship_fee <0?0:$ship_fee;
+$vat_amt = $vat_amt <0?0:$vat_amt;
+$grand_total = $grand_total <0?0:$grand_total;
+?>
+
+
+
+                                        </tbody>
+                                        <tfoot>
+                                            <tr class="cart-subtotal">
+                                                <th>ราคา
+                                                    <input type="hidden" name="ship_fee_status" id="ship_fee_status" value="<?php echo $ship_fee_status;?>">
+                                                    <input type="hidden" name="cus_id" id="cus_id">
+                                                    <input type="hidden" name="vat_amt" id="vat_amt" value="<?php echo $vat_amt;?>">
+                                                    <input type="hidden" name="sub_total_vat" id="sub_total_vat" value="<?php echo $sub_total_vat;?>">
+                                                    <input type="hidden" name="sub_total" id="sub_total" value="<?php echo $sub_total;?>">
+                                                </th>
+                                                <td class="text-right">$<?php echo number_format($sub_total,2)?></td>
+                                            </tr>
+                                            <tr class="shipping">
+                                                <th>ค่าจัดส่ง<input type="hidden" name="ship_fee" id="ship_fee" value="<?php echo $ship_fee;?>"></th>
+                                                <td class="text-right">
+                                                    $<?php echo number_format($ship_fee,2);?>
+                                                </td>
+                                            </tr>
+                                            <tr class="order-total">
+                                                <th>รวม<input type="hidden" name="grand_total" id="grand_total" value="<?php echo $grand_total;?>"></th>
+                                                <td class="text-right"><span class="order-total-ammount">$<?php echo number_format($grand_total,2)?></span></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="checkout-payment">
+                                        <div class="payment-group mb--10">
+                                            <div class="payment-radio">
+                                                <input disabled="true" type="radio" class="ship_type" value="Immediately" name="ship_type" <?php if($value00['ship_type']=='Immediately'){echo 'checked';}?>>
+                                                <label class="payment-label" for="cheque">จัดส่งทันที</label>
+                                            </div>
+                                        </div>
+                                        <div class="payment-group mb--10">
+                                            <div class="payment-radio">
+                                                <input disabled="true" type="radio" class="ship_type" value="Not Now    " name="ship_type" <?php if($value00['ship_type']=='Not Now'){echo 'checked';}?>>
+                                                <label class="payment-label" for="cheque">
+                                                    รอจัดส่ง
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!--
+                                        <div class="payment-group mt--20">
+                                            <input type="button" id="bt_checkout" value="สั่งซื้อ" class="btn btn-fullwidth btn-style-1 btn-submit">
+                                        </div>
+                                        -->
                                 </div>
                             </div>
                         </div>
+                        <!-- Checkout Area End -->
+                        </form>
                     </div>
+
+
                 </div>
             </div>
         </div>
         <!-- Main Content Wrapper Start -->
 
-
-
-        <!-- Search from Start --> 
-        <div class="searchform__popup" id="searchForm">
-            <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
-            <div class="searchform__body">
-                <p>Start typing and press Enter to search</p>
-                <form class="searchform">
-                    <input type="text" name="search" id="search" class="searchform__input" placeholder="Search Entire Store...">
-                    <button type="submit" class="searchform__submit"><i class="dl-icon-search10"></i></button>
-                </form>
-            </div>
-        </div>
-        <!-- Search from End --> 
-        
         <!-- Breadcrumb area Start -->
 
         <div style="background-color: #f5bcbc !important;" class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
@@ -310,6 +366,21 @@
         </div>
 
         <!-- Breadcrumb area End -->
+
+
+        <!-- Search from Start --> 
+        <div class="searchform__popup" id="searchForm">
+            <a href="#" class="btn-close"><i class="dl-icon-close"></i></a>
+            <div class="searchform__body">
+                <p>Start typing and press Enter to search</p>
+                <form class="searchform">
+                    <input type="text" name="search" id="search" class="searchform__input" placeholder="Search Entire Store...">
+                    <button type="submit" class="searchform__submit"><i class="dl-icon-search10"></i></button>
+                </form>
+            </div>
+        </div>
+        <!-- Search from End --> 
+        
 
         <!-- Mini Cart Start -->
         <aside class="mini-cart" id="miniCart">
@@ -445,9 +516,9 @@
                                 </span>
                             </span>
                             <p class="product-short-description mb--25 mb-md--20">Donec accumsan auctor iaculis. Sed suscipit arcu ligula, at egestas magna molestie a. Proin ac ex maximus, ultrices justo eget, sodales orci. Aliquam egestas libero ac turpis pharetra, in vehicula lacus scelerisque. Vestibulum ut sem laoreet, feugiat tellus at, hendrerit arcu.</p>
-                            <div class="product-action d-flex flex-row align-items-center mb--30 mb-md--20">
+                            <div class="product-action d-flex flex-row align-items-center mb--30">
                                 <div class="quantity">
-                                    <input type="number" class="quantity-input" name="qty" id="quick-qty" value="1" min="1">
+                                    <input type="number" class="quantity-input" name="qty" id="qty" value="1" min="1">
                                 </div>
                                 <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="window.location.href='cart.html'">
                                     Add To Cart
@@ -455,7 +526,7 @@
                                 <a href="wishlist.html"><i class="dl-icon-heart2"></i></a>
                                 <a href="compare.html"><i class="dl-icon-compare2"></i></a>
                             </div>  
-                            <div class="product-extra mb--30 mb-md--20">
+                            <div class="product-extra mb--30">
                                 <a href="#" class="font-size-12"><i class="fa fa-map-marker"></i>Find store near you</a>
                                 <a href="#" class="font-size-12"><i class="fa fa-exchange"></i>Delivery and return</a>
                             </div>
@@ -505,6 +576,7 @@
 
     </div>
     <!-- Main Wrapper End -->
+
 
         <!-- Modal Line API -->
         <div class="modal fade lineapi" id="lineapi" tabindex="-1" role="dialog" aria-hidden="true">
@@ -631,28 +703,20 @@
 
     <!-- REVOLUTION ACTIVE JS FILES -->
     <script src="assets/js/revoulation.js"></script>
+    
+</body>
     <script>
-        setTimeout(function(){
-            $(".nav-link:eq(1)").click();
-        },400);
-
         $(document).ready(function(){
-            if(cus_id==''){
-                setTimeout(function(){
-                    fullaction();
-                },1000);
+
+            if(ord_id=='') {
+                window.history.back();
             }
+
         });
+
     </script>
 </body>
 <?php
-$uriSegments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-    if($uriSegments[1]!='lala') {
-?>
-    <script src="https://d.line-scdn.net/liff/1.0/sdk.js"></script>
-    <script src="liff-starter.js"></script>
-<?php
-}
 mysqli_close($conn);
 ?>
 </html>

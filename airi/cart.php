@@ -52,12 +52,11 @@
         return true;
       }
       var accesstokenfield = "";
-      var useridprofilefield = "";
+      var useridprofilefield = "<?php echo $_SESSION['useridprofilefield'];?>";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-
-      var cus_id = "";
+      var cus_id = "<?php echo $_SESSION['cus_id'];?>";
       var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
 </head>
@@ -334,14 +333,14 @@ $grand_total = $grand_total <0?0:$grand_total;
 
         <!-- Breadcrumb area Start -->
 
-        <div class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
+        <div style="background-color: #f5bcbc !important;" class="breadcrumb-area bg--white-6 breadcrumb-bg-1 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="page-title">Cart</h1>
+                        <h1 class="page-title">ตะกร้า</h1>
                         <ul class="breadcrumb justify-content-center">
-                            <li><a href="index.html">Home</a></li>
-                            <li class="current"><span>Cart</span></li>
+                            <li><a href="/shop-sidebar.php">หน้าหลัก</a></li>
+                            <li class="current"><span>ตะกร้า</span></li>
                         </ul>
                     </div>
                 </div>

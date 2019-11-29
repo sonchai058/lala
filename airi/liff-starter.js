@@ -138,6 +138,7 @@ function fullaction() {
 	            window.alert("Error getting profile: " + error);
 	        });   
 
+			/*
 	        liff.sendMessages([{
 	            type: 'text',
 	            text: "สวัสดีค่ะ วันนี้ท่านได้เชื่อมต่อกับระบบ Lalabeauty Shop เรียบร้อยแล้ว!"
@@ -146,7 +147,7 @@ function fullaction() {
 	        }).catch(function (error) {
 	            window.alert("Error sending message: " + error);
 	        });
-
+			*/
 
 	   },1000);
 	}
@@ -157,7 +158,7 @@ function setMsg(msg) {
         liff.sendMessages([{
             type: 'text',
             text: msg
-        }, {
+        },{
             type: 'sticker',
             packageId: '2',
             stickerId: '144'

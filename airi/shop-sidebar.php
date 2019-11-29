@@ -1,5 +1,6 @@
 <?php 
 require("inc-items-data.php");
+//$_SESSION['date_alert_today']
 
 //die('<pre>'.print_r($_SESSION['items']).'</pre>');
 
@@ -61,11 +62,11 @@ $sql = "SELECT *,".$sql." limit {$pagestart_count},$page_count";
         return true;
       }
       var accesstokenfield = "";
-      var useridprofilefield = "";
+      var useridprofilefield = "<?php echo $_SESSION['useridprofilefield'];?>";
       var displaynamefield = "";
       var pictureUrl = "";
       var statusmessagefield = "";
-      var cus_id = "";
+      var cus_id = "<?php echo $_SESSION['cus_id'];?>";
       var url_back = "<?php echo @$_GET['url_back'];?>";
     </script>
 </head>
@@ -415,7 +416,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                                     <i class="dl-icon-view"></i>
                                                                 </span>
                                                             </a>
-                                                            <a class="add_to_cart_btn action-btn" href="javascript:void(0)"  onclick="add2Cart(<?php echo $value['prd_id'];?>,1)" data-toggle="tooltip" data-placement="top" title="หยิบใส่ตะกร้า">
+                                                            <a class="add_to_cart_btn action-btn" href="javascript:void(0)"  onclick="add2Cart(<?php echo $value['prd_id'];?>,1,this)" data-toggle="tooltip" data-placement="top" title="หยิบใส่ตะกร้า">
                                                                 <i class="dl-icon-cart29"></i>
                                                             </a>
                                                             <!--
@@ -431,7 +432,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                                     <?php 
                                                     //$sts = $status[rand(0,3)];
                                                     ?>
-                                                    <span class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?></span>
+                                                    <span style="overflow: hidden;" class="product-badge <?php echo $value['badge_status'];?>"><?php echo $value['badge_status'];?></span>
                                                 </figure>
                                                 <div class="product-info text-center">
                                                     <h3 class="product-title">
@@ -528,14 +529,14 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
 
         <!-- Breadcrumb area Start -->
 
-        <div class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
+        <div style="background-color: #f5bcbc !important;" class="breadcrumb-area bg--white-6 pt--60 pb--70 pt-lg--40 pb-lg--50 pt-md--30 pb-md--40">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 text-center">
-                        <h1 class="page-title">Shop Sidebar</h1>
+                        <h1 class="page-title">ค้นหาสินค้า</h1>
                         <ul class="breadcrumb justify-content-center">
-                            <li><a href="index.html">Home</a></li>
-                            <li class="current"><span>Shop Pages</span></li>
+                            <li><a href="/shop-sidebar.php">หน้าหลัก</a></li>
+                            <li class="current"><span>ค้นหาสินค้า</span></li>
                         </ul>
                     </div>
                 </div>
@@ -681,7 +682,7 @@ while($value=mysqli_fetch_array($rows,MYSQLI_ASSOC)) {
                                 <div class="quantity">
                                     <input type="number" class="quantity-input" name="qty" step="1" id="qty" value="1" min="1" max="10">
                                 </div>
-                                <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="add2Cart($('#prd_id').val(),$('#qty').val())">
+                                <button type="button" class="btn btn-style-1 btn-semi-large add-to-cart" onclick="add2Cart($('#prd_id').val(),$('#qty').val(),this)">
                                     หยิบใส่ตะกร้า
                                 </button>
                             <!--   
