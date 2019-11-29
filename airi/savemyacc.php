@@ -35,9 +35,9 @@ if($type=="UPDATE") {
 $query = mysqli_query($conn,$sql);
 //$tmp = mysqli_fetch_array($query,MYSQLI_ASSOC);
 if($query) {
- echo json_encode(array('staus'=>'ok','msg'=>"{$type} cus_info successfully",'data'=>$query));
+ echo json_encode(array('status'=>'ok','msg'=>"{$type} cus_info successfully",'data'=>$query));
 }else {
-	 echo json_encode(array('staus'=>'failed','msg'=>'error','data'=>$query));
+	 echo json_encode(array('status'=>'failed','msg'=>'error','data'=>$query));
 }
 mysqli_close($conn);
 

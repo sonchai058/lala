@@ -33,7 +33,7 @@ $sql_root_query = "INSERT INTO cus_order SET bsn_id ='1',cus_id={$_POST['cus_id'
  $data = array('ord_id'=>$ord_id,'ord_code'=>$ord_code,'reg_capcha'=>$reg_capcha);
 
  unset($_SESSION['items']);
- echo json_encode(array('staus'=>'ok','data'=>$data));
+ echo json_encode(array('status'=>'ok','data'=>$data,'ord_id_return'=>$reg_capcha));
 
 function randString($length, $charset='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')
 {

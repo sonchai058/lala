@@ -20,9 +20,9 @@ if(isset($tmp['cus_id'])) {
  	 $_SESSION['date_alert_today'] = $alert_today;
  	 $alert = 1;
  }
-  echo json_encode(array('staus'=>'ok','msg'=>"have data.",'data'=>$tmp,'alert'=>$alert));
+  echo json_encode(array('status'=>'ok','msg'=>"have data.",'data'=>$tmp,'alert'=>$alert));
  }else {
-  echo json_encode(array('staus'=>'failed','msg'=>'no data.','data'=>$tmp,'alert'=>$alert));
+  echo json_encode(array('status'=>'failed','msg'=>'no data.','data'=>$tmp,'alert'=>$alert));
  }
 mysqli_close($conn);
 

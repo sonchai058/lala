@@ -123,7 +123,7 @@
                 data: $("#profile").serialize(),
                 success: function(data){
                     console.log(data);
-                    if(data.staus=='ok') {
+                    if(data.status=='ok') {
                         alert("บันทึกข้อมูลสำเร็จ...");
                         $("#load").html("บันทึกข้อมูลสำเร็จ...");
                         if(url_back!='') {
@@ -168,7 +168,7 @@
                 data: {'type':type,'mobile_no':$("#mobile_no").val(),'useridprofilefield':useridprofilefield},
                 success: function(data){
                     console.log(data);
-                    if(data.staus=='ok') {
+                    if(data.status=='ok') {
                         if(type=='mobile_no'){alert("พบข้อมูลสมาชิก...");$("#bt_search_mobile").hide();}
                         $("#cus_fname").val(data.data.cus_fname);
                         $("#cus_lname").val(data.data.cus_lname);

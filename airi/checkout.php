@@ -705,8 +705,9 @@ $grand_total = $grand_total <0?0:$grand_total;
                     url: 'savemyacc.php',
                     data: $("#profile").serialize(),
                     success: function(data){
+                        alert(JSON.stringify(data));
                         console.log(data);
-                        if(data.staus=='ok') {
+                        if(data.status=='ok') {
                             //alert("บันทึกข้อมูลสำเร็จ...");
                             //$("#load").html("บันทึกข้อมูลสำเร็จ...");
                     
@@ -716,15 +717,15 @@ $grand_total = $grand_total <0?0:$grand_total;
                                 data: $("#profile").serialize(),
                                 success: function(data){
                                     console.log(data);
-                                    if(data.staus=='ok') {
+                                    if(data.status=='ok') {
                                         msg = "ขอบคุณที่สั่งสินค้ากับเราค่ะ...";
                                         alert("ขอบคุณที่สั่งสินค้ากับเราค่ะ...");
                                         $("#load").html("สั่งสินค้าสำเร็จ...");
                                         alert(JSON.stringify(data));
-                                        setMsg(msg+"\n"+"ติดตามการสั่งซื้อ\n"+"https://www.lalabeauty.co.th/bill/?ord_id="+data.data.reg_capch);
+                                        setMsg(msg+"\n"+"ติดตามการสั่งซื้อ\n"+"https://www.lalabeauty.co.th/bill/?ord_id="+data.ord_id_return);
 
                                         setTimeout(function(){
-                                            window.location.replace("https://www.lalabeauty.co.th/bill/?ord_id="+data.data.reg_capcha);
+                                            window.location.replace("https://www.lalabeauty.co.th/bill/?ord_id="+data.ord_id_return);
                                         },1000);
 
 

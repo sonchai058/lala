@@ -75,6 +75,6 @@ if($ck==0) {
   $key0++;
  }
 
-echo json_encode(array('staus'=>'ok','data'=>$items_cart));
+echo json_encode(array('status'=>'ok','data'=>$items_cart));
 
 ?>

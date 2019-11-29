@@ -10,6 +10,6 @@
 
  $_SESSION['items'] = $items_cart;
 
-echo json_encode(array('staus'=>'ok','data'=>$_GET['prd_id']));
+echo json_encode(array('status'=>'ok','data'=>$_GET['prd_id']));
 
 ?>

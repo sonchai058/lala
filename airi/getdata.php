@@ -22,5 +22,5 @@
  		$data[] = $value;
  	}
  }
-echo json_encode(array('staus'=>'ok','data'=>$data));
+echo json_encode(array('status'=>'ok','data'=>$data));
 ?>
