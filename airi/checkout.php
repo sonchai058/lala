@@ -705,7 +705,7 @@ $grand_total = $grand_total <0?0:$grand_total;
                     url: 'savemyacc.php',
                     data: $("#profile").serialize(),
                     success: function(data){
-                        alert(JSON.stringify(data));
+                        //alert(JSON.stringify(data));
                         console.log(data);
                         if(data.status=='ok') {
                             //alert("บันทึกข้อมูลสำเร็จ...");
@@ -721,7 +721,7 @@ $grand_total = $grand_total <0?0:$grand_total;
                                         msg = "ขอบคุณที่สั่งสินค้ากับเราค่ะ...";
                                         alert("ขอบคุณที่สั่งสินค้ากับเราค่ะ...");
                                         $("#load").html("สั่งสินค้าสำเร็จ...");
-                                        alert(JSON.stringify(data));
+                                        //alert(JSON.stringify(data));
                                         setMsg(msg+"\n"+"ติดตามการสั่งซื้อ\n"+"https://www.lalabeauty.co.th/bill/?ord_id="+data.ord_id_return);
 
                                         setTimeout(function(){
